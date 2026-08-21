@@ -996,7 +996,7 @@ ALTER TABLE `ventas`
 --
 DROP TABLE IF EXISTS `v_pacientes_admin`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_pacientes_admin`  AS SELECT `p`.`id_paciente` AS `id_paciente`, `u`.`id_usuario` AS `id_usuario`, `u`.`cedula` AS `cedula`, `u`.`nombre` AS `nombre`, `u`.`apellido` AS `apellido`, concat(`u`.`nombre`,' ',`u`.`apellido`) AS `nombre_completo`, `u`.`correo` AS `correo`, `u`.`telefono` AS `telefono`, `u`.`fecha_nacimiento` AS `fecha_nacimiento`, timestampdiff(YEAR,`u`.`fecha_nacimiento`,curdate()) AS `edad`, `u`.`direccion` AS `direccion`, `u`.`estado` AS `estado`, `u`.`fecha_creacion` AS `fecha_creacion` FROM (`pacientes` `p` join `usuarios` `u` on((`p`.`id_usuario` = `u`.`id_usuario`))) ;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_pacientes_admin`  AS SELECT `p`.`id_paciente` AS `id_paciente`, `u`.`id_usuario` AS `id_usuario`, `u`.`cedula` AS `cedula`, `u`.`nombre` AS `nombre`, `u`.`apellido` AS `apellido`, concat(`u`.`nombre`,' ',`u`.`apellido`) AS `nombre_completo`, `u`.`correo` AS `correo`, `u`.`telefono` AS `telefono`, `u`.`fecha_nacimiento` AS `fecha_nacimiento`, timestampdiff(YEAR,`u`.`fecha_nacimiento`,curdate()) AS `edad`, `u`.`direccion` AS `direccion`, `u`.`estado` AS `estado`, `u`.`fecha_creacion` AS `fecha_creacion` FROM (`pacientes` `p` join `usuarios` `u` on((`p`.`id_usuario` = `u`.`id_usuario`))) ;
 
 -- --------------------------------------------------------
 
@@ -1005,7 +1005,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `v_resumen_admin`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_resumen_admin`  AS SELECT (select count(0) from `pacientes`) AS `pacientes_registrados`, (select count(0) from `citas` where (`citas`.`estado` in ('pendiente','en_espera','en_atencion'))) AS `citas_programadas`, (select count(0) from `productos` where (`productos`.`activo` = 1)) AS `productos_en_inventario`, (select count(0) from `ventas` where (`ventas`.`estado` = 'pagada')) AS `ventas_realizadas` ;
+CREATE ALGORITHM=UNDEFINED SQL SECURITY DEFINER VIEW `v_resumen_admin`  AS SELECT (select count(0) from `pacientes`) AS `pacientes_registrados`, (select count(0) from `citas` where (`citas`.`estado` in ('pendiente','en_espera','en_atencion'))) AS `citas_programadas`, (select count(0) from `productos` where (`productos`.`activo` = 1)) AS `productos_en_inventario`, (select count(0) from `ventas` where (`ventas`.`estado` = 'pagada')) AS `ventas_realizadas` ;
 
 -- --------------------------------------------------------
 

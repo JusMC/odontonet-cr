@@ -20,7 +20,7 @@ require_once './assets/includes/config/config.php'; // Trae $pdo, la conexión a
 
 // Si en la sesión no hay un usuario_id guardado, es que nadie inició sesión: lo mandamos al login.
 if (!isset($_SESSION['usuario_id'])) {
-    header('Location: /OdontoNet/login.php');
+    header('Location: /login.php');
     exit; // Detenemos la página aquí, no se muestra nada más.
 }
 
@@ -35,6 +35,6 @@ if ($_usuario_estado === false || (int)$_usuario_estado !== 1) {
     // Usuario inactivado o eliminado: destruir sesión y redirigir.
     session_unset();   // Borra todas las variables de la sesión.
     session_destroy(); // Elimina la sesión por completo en el servidor.
-    header('Location: /OdontoNet/login.php?razon=inactivo'); // Vuelve al login con un aviso de por qué.
+    header('Location: /login.php?razon=inactivo'); // Vuelve al login con un aviso de por qué.
     exit;
 }

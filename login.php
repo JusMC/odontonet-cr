@@ -169,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             if (mfa_esta_activo($pdo, (int) $usuario['id_usuario'])) {
                 $_SESSION['mfa_pendiente_usuario_id'] = (int) $usuario['id_usuario'];
-                $_SESSION['mfa_pendiente_destino']    = '/OdontoNet/' . $redirect;
+                $_SESSION['mfa_pendiente_destino']    = '/' . $redirect;
                 header('Location: verificar_mfa.php');
                 exit;
             }
@@ -190,7 +190,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             registrar_bitacora($pdo, 'LOGIN', "Inicio de sesión de {$usuario['nombre']} (#{$usuario['id_usuario']}).", (int) $usuario['id_usuario']);
 
-            header('Location: /OdontoNet/' . $redirect);
+            header('Location: /' . $redirect);
             exit;
 
         } else {

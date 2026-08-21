@@ -15,7 +15,7 @@ if (
     !hash_equals($_SESSION['oauth_state'], $_GET['state'])
 ) {
     session_unset();
-    header('Location: /OdontoNet/login.php?error=oauth_state');
+    header('Location: /login.php?error=oauth_state');
     exit;
 }
 unset($_SESSION['oauth_state']); // Ya cumplió su función, no hace falta guardarlo más.
@@ -23,7 +23,7 @@ unset($_SESSION['oauth_state']); // Ya cumplió su función, no hace falta guard
 // ── 2. Verificar que Google nos envió un code ──────────────────────────────
 // El "code" es como un boleto de un solo uso que canjeamos por el token en el siguiente paso.
 if (empty($_GET['code'])) {
-    header('Location: /OdontoNet/login.php?error=oauth_code');
+    header('Location: /login.php?error=oauth_code');
     exit;
 }
 
@@ -46,14 +46,14 @@ $token_response = file_get_contents('https://oauth2.googleapis.com/token', false
 );
 
 if ($token_response === false) {
-    header('Location: /OdontoNet/login.php?error=oauth_token');
+    header('Location: /login.php?error=oauth_token');
     exit;
 }
 
 $token_data = json_decode($token_response, true); // Convertimos la respuesta JSON a un array de PHP.
 
 if (empty($token_data['access_token'])) {
-    header('Location: /OdontoNet/login.php?error=oauth_token');
+    header('Location: /login.php?error=oauth_token');
     exit;
 }
 
@@ -69,14 +69,14 @@ $perfil_response = file_get_contents('https://www.googleapis.com/oauth2/v2/useri
 );
 
 if ($perfil_response === false) {
-    header('Location: /OdontoNet/login.php?error=oauth_perfil');
+    header('Location: /login.php?error=oauth_perfil');
     exit;
 }
 
 $perfil = json_decode($perfil_response, true);
 
 if (empty($perfil['email'])) {
-    header('Location: /OdontoNet/login.php?error=oauth_perfil');
+    header('Location: /login.php?error=oauth_perfil');
     exit;
 }
 
@@ -98,7 +98,7 @@ $usuario = $stmt->fetch();
 
 // ── 6. Si el usuario existe pero está inactivo, bloquear ──────────────────
 if ($usuario && (int)$usuario['estado'] !== 1) {
-    header('Location: /OdontoNet/login.php?razon=inactivo');
+    header('Location: /login.php?razon=inactivo');
     exit;
 }
 
@@ -146,7 +146,7 @@ if (!$usuario) {
     } catch (PDOException $e) {
         $pdo->rollBack();
         registrar_bitacora($pdo, 'ERROR', "Falló la creación de cuenta vía Google OAuth para '$google_email': " . $e->getMessage());
-        header('Location: /OdontoNet/login.php?error=oauth_db');
+        header('Location: /login.php?error=oauth_db');
         exit;
     }
 }
@@ -167,8 +167,8 @@ require_once 'assets/includes/helpers/mfa_helper.php';
 if (mfa_esta_activo($pdo, (int) $usuario['id_usuario'])) {
     // Guardamos en sesión quién es y a dónde debe ir DESPUÉS de verificar el código MFA.
     $_SESSION['mfa_pendiente_usuario_id'] = (int) $usuario['id_usuario'];
-    $_SESSION['mfa_pendiente_destino']    = '/OdontoNet/' . $destino;
-    header('Location: /OdontoNet/verificar_mfa.php');
+    $_SESSION['mfa_pendiente_destino']    = '/' . $destino;
+    header('Location: /verificar_mfa.php');
     exit;
 }
 
@@ -189,5 +189,5 @@ if (!empty($usuario['id_paciente'])) {
 
 registrar_bitacora($pdo, 'LOGIN', "Inicio de sesión con Google de {$usuario['nombre']} (#{$usuario['id_usuario']}).", (int) $usuario['id_usuario']);
 
-header('Location: /OdontoNet/' . $destino);
+header('Location: /' . $destino);
 exit;

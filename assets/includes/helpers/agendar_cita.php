@@ -15,16 +15,16 @@ require_once __DIR__ . '/bitacora_helper.php';
 
 // Si no hay ningún usuario en sesión, lo mandamos al login (con redirect de vuelta a citas.php).
 if (!isset($_SESSION['usuario_id'])) {
-    header('Location: /OdontoNet/login.php?redirect=citas.php');
+    header('Location: /login.php?redirect=citas.php');
     exit;
 }
 if (!isset($_SESSION['paciente_id'])) {
     // Sesión activa pero no es paciente (admin/doctor/recepcionista):
     // redirigir a su panel correspondiente.
     $destino = match((int)($_SESSION['id_rol'] ?? 0)) {
-        4 => '/OdontoNet/admin.php',
-        2, 3 => '/OdontoNet/control_citas.php',
-        default => '/OdontoNet/login.php',
+        4 => '/admin.php',
+        2, 3 => '/control_citas.php',
+        default => '/login.php',
     };
     header('Location: ' . $destino);
     exit;
