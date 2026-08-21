@@ -41,7 +41,6 @@ function guardar_archivo_subido(string $ruta_tmp, string $carpeta_relativa, stri
         ]);
         $respuesta = curl_exec($ch);
         $codigo = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
 
         if ($codigo !== 200 || $respuesta === false) {
             return null;
@@ -89,7 +88,6 @@ function eliminar_archivo_guardado(?string $valor_guardado): void {
             CURLOPT_RETURNTRANSFER => true,
         ]);
         curl_exec($ch);
-        curl_close($ch);
         return;
     }
 
@@ -112,7 +110,6 @@ function leer_archivo_guardado(string $valor_guardado): ?string {
         ]);
         $contenido = curl_exec($ch);
         $codigo = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
 
         return ($codigo === 200 && $contenido !== false) ? $contenido : null;
     }
