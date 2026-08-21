@@ -1,9 +1,11 @@
-.vercel
-.env
-vendor/
+# Dependencias de Composer (se reinstalan con "composer install")
+/vendor/
 
-# Credenciales y configuración sensible — nunca deben subirse al repositorio
-assets/includes/config/oauth_config.php
-assets/includes/config/stripe_config.php
-assets/includes/config/mail_config.php
-assets/includes/config/mfa_config.php
+# Credenciales y configuración sensible — nunca deben subirse al repositorio.
+# oauth_config.php, mfa_config.php, mail_config.php y stripe_config.php ya NO
+# contienen secretos (leen de variables de entorno); los valores reales para
+# desarrollo local viven en estas versiones *.local.php, que sí se ignoran.
+assets/includes/config/oauth_config.local.php
+assets/includes/config/stripe_config.local.php
+assets/includes/config/mail_config.local.php
+assets/includes/config/mfa_config.local.php

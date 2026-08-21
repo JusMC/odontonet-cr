@@ -3,23 +3,7 @@
 // config.php — Este archivo se encarga de preparar la conexión con la base de datos.
 // Se incluye en otros archivos (ej: login.php, guardar.php) para que todos usen la misma conexión.
 
-// Lee una variable de entorno probando las tres formas en que PHP puede
-// exponerla (getenv(), $_ENV, $_SERVER) — según el servidor/runtime, no
-// siempre se llenan las tres, así que se revisan todas antes de rendirse
-// y usar el valor por defecto (pensado para un entorno local de Laragon/XAMPP).
-function config_env(string $nombre, string $por_defecto): string {
-    $valor = getenv($nombre);
-    if ($valor !== false && $valor !== '') {
-        return $valor;
-    }
-    if (!empty($_ENV[$nombre])) {
-        return $_ENV[$nombre];
-    }
-    if (!empty($_SERVER[$nombre])) {
-        return $_SERVER[$nombre];
-    }
-    return $por_defecto;
-}
+require_once __DIR__ . '/env_helper.php';
 
 // Datos de conexión a la base de datos. En producción (ej. Vercel) se configuran
 // como variables de entorno DB_HOST, DB_PORT, DB_NAME, DB_USER, DB_PASSWORD; en
