@@ -1,0 +1,12 @@
+/* dashboard_forms.css — Estilos reutilizados por las pantallas de
+   administración basadas en tabla/formulario: usuarios.php y
+   permisos.php. */
+
+.form-head {
+    text-align: left;
+    margin-bottom: 24px;
+}
+
+.section-tabla {
+    padding-bottom: 80px;
+}

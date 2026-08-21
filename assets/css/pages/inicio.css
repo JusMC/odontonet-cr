@@ -1,0 +1,46 @@
+/* inicio.css — Estilos exclusivos de inicio.php: el modal "Completar
+   registro" que se fuerza a las cuentas creadas por OAuth (Google/Microsoft)
+   mientras les falten los datos que registro.php le pide a cualquier
+   paciente (cédula, fecha de nacimiento, teléfono, contraseña). */
+
+.dash-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(9, 11, 18, 0.82);
+    backdrop-filter: blur(6px);
+    z-index: 10000;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px;
+    overflow-y: auto;
+}
+
+.dash-modal-overlay.active {
+    display: flex;
+}
+
+.dash-modal-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 28px 30px;
+    width: 100%;
+    max-width: 460px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    animation: dashModalIn 0.2s ease-out;
+}
+
+@keyframes dashModalIn {
+    from { opacity: 0; transform: translateY(-10px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.dash-modal-head {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dash-modal-card { animation: none; transition: none; }
+}

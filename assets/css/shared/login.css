@@ -1,0 +1,143 @@
+/*
+   login.css — Estilos EXCLUSIVOS de la vista de inicio de sesión.
+ 
+   Sigue el mismo patrón que home.css: solo contiene lo que es único de
+   esta página (la tarjeta de login, su borde neón, el logo, etc.).
+   Todo lo compartido (botones .btn-primary, campos .field, tarjeta
+   base .card...) vive en componentes.css.
+*/
+
+/* ---------- Borde neón degradado alrededor de la tarjeta ---------- */
+/* Técnica del "borde con padding": este div de afuera tiene fondo en
+   degradado y 2px de padding; adentro va la tarjeta real con su propio
+   fondo sólido (.card), que tapa todo menos esos 2px — el resultado
+   visual es un borde delgado en degradado alrededor de la tarjeta. */
+.login-card-glow{
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  padding: 2px; /* Grosor del borde */
+  border-radius: 26px;
+  background: linear-gradient(135deg, var(--cyan), var(--violet), var(--pink));
+  background-size: 200% 200%; /* El fondo es más grande que el elemento, para poder animarlo desplazándolo */
+  animation: border-flow 6s ease infinite;
+  box-shadow: 0 0 40px rgba(0, 240, 255, 0.18), 0 0 70px rgba(255, 46, 146, 0.12); /* Resplandor extra alrededor de toda la tarjeta */
+}
+
+/* Desplaza la posición del fondo en degradado para simular que los
+   colores "fluyen" alrededor del borde. */
+@keyframes border-flow{
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Accesibilidad: si el usuario prefiere menos movimiento, se detiene la animación. */
+@media (prefers-reduced-motion: reduce){
+  .login-card-glow{ animation: none; }
+}
+
+/* La tarjeta real vive adentro, con su propio fondo (heredado de la
+   clase .card en componentes.css), para que se vea como un borde
+   delgado y no como un relleno de color sólido. */
+.login-card{
+  width: 100%;
+  max-width: none; /* el ancho ya lo controla .login-card-glow */
+  padding: 40px 36px 34px;
+  border-radius: 24px; /* 2px menos que el contenedor, para que el borde se vea parejo */
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Botón "Iniciar sesión": centrado dentro del formulario ----------
+  .btn-primary (definido en componentes.css) usa display:inline-flex,
+  lo que lo hace comportarse como un elemento en línea dentro del
+  <form> (que es un bloque normal) y por eso se pegaba a la izquierda.
+  Se convirtió el <form> en un contenedor flex en columna: así los
+  campos (.field, que ya tienen width:100%) siguen ocupando todo el
+  ancho, y el botón se centra solo con align-self. */
+.login-card form{
+  display: flex;
+  flex-direction: column;
+}
+
+.login-card form .btn-primary{
+  align-self: center;
+}
+
+/* ---------- Logo (mismo estilo que el navbar del index) ---------- */
+.login-logo{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.login-logo .logo{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-logo .logo-img{
+  height: 64px;   /* Ajustar este valor al gusto */
+  width: auto;
+  display: block;
+}
+
+.login-card h1{
+  font-size: 1.6rem;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.login-subtitle{
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-bottom: 28px;
+}
+
+/* ---------- Botones de login social (Google / Apple) ---------- */
+.login-socials{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+/* ---------- Pie de la tarjeta: "¿Eres nuevo? Crear una cuenta" ---------- */
+.login-footer{
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.login-footer .paragraph{
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+/* ---------- Enlace "Olvidé mi contraseña" ---------- */
+.login-forgot{
+  text-align: right;
+  margin: -8px 0 18px; /* Margen negativo para acercarlo al campo de contraseña de arriba */
+}
+
+.login-forgot a{
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+.login-forgot a:hover{ color: var(--cyan); }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px){
+  .login-card{ padding: 32px 24px 28px; } /* Menos aire en pantallas muy angostas */
+}

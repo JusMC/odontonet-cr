@@ -1,0 +1,7 @@
+/* pacientes.css — Estilos exclusivos de pacientes.php. */
+
+.dash-hint-nota {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 18px;
+}

@@ -1,41 +1,38 @@
-<!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title><?="PHP + Vercel";?></title>
-  <link rel="shortcut icon" href="../public/images/favicon.png" type="image/x-icon">
-  <link rel="stylesheet" href="../vendor/twbs/bootstrap-icons/font/bootstrap-icons.css">
-  <link rel="stylesheet" href="../public/styles/styles.css">
-  <link rel="stylesheet" href="../public/styles/bootstrap.min.css">
-</head>
-<body class="d-flex min-vh-100 text-center">
-  <main class="d-flex container-lg mx-auto flex-column">
-    <header class="pt-5">
-        <div class="d-flex w-50 align-items-center justify-content-center mx-auto">
-          <div>
-            <img class="img-fluid" src="../public/images/php-vercel.svg" alt="">
-          </div>
-        </div>
-      </header>
-      <div>
-        <h1 class="mt-5">Deploy PHP Application to Vercel</h1>
-        <div class="row">
-          <div class="col-lg-8 col-12 mx-auto">
-            <p class="lead">
-              Do you have a PHP application project but only stored on your local machine? Now with Vercel you can deploy your application to the internet!
-            </p>
-          </div>
-        </div>
-        <a class="btn btn-lg btn-outline-light" href="/api/tutorial.php" role="button">Learn more</a>
-      </div>
-      <footer class="mt-auto text-white-50">
-        <p>Insipired by <a href="https://github.com/vercel-community/php" class="text-white">@vercel-community</a> and <a href="https://github.com/juicyfx/vercel-examples" class="text-white">@juicyfx</a></p>
-        <img src="" alt="">
-      </footer>
-    </main>
-  <script src="../public/scripts/scripts.js"></script>
-  <script src="../public/scripts/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+<?php
+// api/index.php — Front controller único para Vercel.
+//
+// Vercel solo permite funciones serverless dentro de /api, y el plan gratuito
+// tiene un límite bajo de funciones por deployment. En vez de mover las ~40
+// páginas de OdontoNet a /api (superando ese límite), este único archivo
+// intercepta toda la navegación (ver vercel.json) y ejecuta el archivo real
+// correspondiente, que sigue viviendo en su ubicación original del proyecto,
+// tal como corre en un servidor tradicional (Apache/Laragon).
+
+$raiz_proyecto = realpath(__DIR__ . '/..');
+
+$ruta_uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH);
+if ($ruta_uri === '' || $ruta_uri === '/') {
+    $ruta_uri = '/index.php';
+}
+$ruta_uri = str_replace('\\', '/', $ruta_uri);
+
+// Solo se permite ejecutar archivos .php que existan realmente dentro del
+// proyecto (protege contra path traversal con realpath + comparación de prefijo).
+$ruta_completa = realpath($raiz_proyecto . $ruta_uri);
+
+$es_valido = $ruta_completa !== false
+    && strpos($ruta_completa, $raiz_proyecto . DIRECTORY_SEPARATOR) === 0
+    && is_file($ruta_completa)
+    && strtolower(pathinfo($ruta_completa, PATHINFO_EXTENSION)) === 'php';
+
+if (!$es_valido) {
+    http_response_code(404);
+    echo '404 - Página no encontrada';
+    exit;
+}
+
+// Igualamos el directorio de trabajo al de la propia página, igual que en un
+// servidor tradicional, para que sus require_once('./algo') o require_once('algo')
+// relativos se resuelvan exactamente igual que en local.
+chdir(dirname($ruta_completa));
+require $ruta_completa;

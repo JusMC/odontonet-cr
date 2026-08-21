@@ -1,0 +1,413 @@
+/* inventario.css — Estilos exclusivos de inventario.php. */
+
+/* Esta página usa más ancho que el resto del sitio (.wrap = 1180px): con
+   barra lateral de filtros + tabla necesita más aire para no verse apretada. */
+.wrap.dash-wide {
+    max-width: 1500px;
+}
+
+/* ---------- Encabezado + botón flotante de agregar ---------- */
+.dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: 48px 0 28px;
+}
+
+.dash-header h1 {
+    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+    line-height: 1.15;
+    font-weight: 700;
+    margin: 8px 0 0;
+}
+
+.dash-fab {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #2ecc71;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(46, 204, 113, 0.35);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+/* El "+" se dibuja con dos barras (pseudo-elementos), sin SVG ni imagen. */
+.dash-fab-plus {
+    position: relative;
+    width: 20px;
+    height: 20px;
+}
+
+.dash-fab-plus::before,
+.dash-fab-plus::after {
+    content: "";
+    position: absolute;
+    background: #ffffff;
+    border-radius: 2px;
+}
+
+.dash-fab-plus::before {
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    transform: translateY(-50%);
+}
+
+.dash-fab-plus::after {
+    left: 50%;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    transform: translateX(-50%);
+}
+
+.dash-fab:hover {
+    background: #3ee888;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 0 26px rgba(46, 204, 113, 0.6);
+}
+
+.dash-fab:active {
+    background: #27b463;
+    transform: translateY(0) scale(0.94);
+    box-shadow: 0 0 12px rgba(46, 204, 113, 0.5);
+}
+
+.dash-fab:focus-visible {
+    outline: 2px solid #2ecc71;
+    outline-offset: 3px;
+}
+
+.dash-fab:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* ---------- Banner de alertas ---------- */
+.dash-alerts {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 28px;
+}
+
+.dash-alert-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    background: rgba(255, 46, 146, 0.08);
+    border: 1px solid rgba(255, 46, 146, 0.25);
+    color: var(--text);
+}
+
+.dash-alert-item.warn {
+    background: rgba(241, 196, 15, 0.08);
+    border-color: rgba(241, 196, 15, 0.3);
+}
+
+.dash-alert-item.info {
+    background: rgba(0, 240, 255, 0.06);
+    border-color: rgba(0, 240, 255, 0.25);
+}
+
+/* ---------- Layout: sidebar + contenido ---------- */
+.dash-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+@media (max-width: 860px) {
+    .dash-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- Botón secundario "Cancelar" / "Limpiar filtros" ---------- */
+/* dashboard.php no incluye gestionUsuarios.css (donde vive .btn-cancel,
+   sin estilo propio de fondo/borde), así que se define completo aquí. */
+.btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-weight: 500;
+    font-size: 0.92rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* ---------- Input de archivo (foto del producto) ---------- */
+.dash-modal-card input[type="file"].form-control {
+    padding: 0.5rem 0.7rem;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.dash-modal-card input[type="file"].form-control::file-selector-button {
+    margin-right: 12px;
+    padding: 7px 16px;
+    border-radius: 7px;
+    border: 1px solid var(--line);
+    background: var(--grad-1);
+    color: #04101a;
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.18s ease;
+}
+
+.dash-modal-card input[type="file"].form-control::file-selector-button:hover {
+    opacity: 0.85;
+}
+
+/* ---------- Sidebar de filtros ---------- */
+.dash-sidebar {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: sticky;
+    top: 24px;
+}
+
+.dash-sidebar h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-family: var(--font-display);
+}
+
+.dash-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.dash-filter-group label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+.dash-price-range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dash-price-range input {
+    min-width: 0;
+}
+
+.dash-sidebar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.dash-sidebar-actions .btn-primary {
+    width: 100%;
+    text-align: center;
+}
+
+.dash-sidebar-actions .btn-cancel {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* ---------- Contenido principal ---------- */
+.dash-main {
+    min-width: 0;
+}
+
+.dash-search {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.dash-search input {
+    flex: 1;
+}
+
+.dash-search input::placeholder {
+    font-weight: 700;
+}
+
+.dash-results-count {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 14px;
+}
+
+/* ---------- Tabla de productos: todo centrado, salvo la columna Producto ---------- */
+.dash-main table th,
+.dash-main table td {
+    text-align: center;
+}
+
+.dash-main table tbody td:first-child {
+    text-align: left;
+}
+
+.dash-product-cell {
+    justify-content: flex-start;
+}
+
+/* ---------- Filas de la tabla según estado ---------- */
+tr.dash-row-expired td:first-child { box-shadow: inset 3px 0 0 var(--pink); }
+tr.dash-row-expiring td:first-child { box-shadow: inset 3px 0 0 #f1c40f; }
+tr.dash-row-lowstock td:first-child { box-shadow: inset 3px 0 0 var(--violet); }
+
+.dash-product-cell {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.dash-product-thumb {
+    width: 38px;
+    height: 38px;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+    border: 1px solid var(--line);
+}
+
+.dash-product-thumb-placeholder {
+    width: 38px;
+    height: 38px;
+    border-radius: 8px;
+    flex-shrink: 0;
+    background: var(--bg-panel-2);
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--muted);
+    font-size: 0.7rem;
+}
+
+/* ---------- Modal genérico (agregar/editar producto) ---------- */
+.dash-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(9, 11, 18, 0.82);
+    backdrop-filter: blur(6px);
+    z-index: 10000;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px;
+    overflow-y: auto;
+}
+
+.dash-modal-overlay.active {
+    display: flex;
+}
+
+.dash-modal-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 24px 26px;
+    width: 100%;
+    max-width: 480px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    animation: dashModalIn 0.2s ease-out;
+}
+
+/* Formulario más compacto dentro del modal (el form-grid de inventario.css
+   está pensado para el ancho completo de la página). */
+.dash-modal-card .form-grid {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+    margin-bottom: 1.1rem;
+}
+
+.dash-modal-card .form-group.col-full {
+    grid-column: auto;
+}
+
+.dash-modal-card .form-control {
+    padding: 0.6rem 0.85rem;
+    font-size: 0.9rem;
+}
+
+.dash-modal-card .form-group label {
+    font-size: 0.82rem;
+}
+
+.dash-modal-card .form-actions {
+    margin-top: 0.5rem;
+}
+
+@keyframes dashModalIn {
+    from { opacity: 0; transform: translateY(-10px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.dash-modal-head {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.dash-modal-close {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 8px;
+}
+
+/* Asterisco de campo obligatorio y aclaraciones tipo "(máx. ...)" */
+.dash-req {
+    color: var(--cyan);
+}
+
+.dash-hint {
+    opacity: 0.55;
+    font-weight: 400;
+}
+
+.dash-modal-close:hover {
+    background: var(--bg-panel-2);
+    color: var(--text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dash-modal-card, .dash-fab { animation: none; transition: none; }
+}

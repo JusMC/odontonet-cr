@@ -1,0 +1,476 @@
+/* citas.css — Estilos exclusivos de citas.php: la pantalla de "Mis citas"
+   del paciente (formulario de agendamiento + resumen) y su dashboard
+   (sidebar de filtros, tabla, modales de agendar/cancelar). */
+
+/* ---------- Formulario de agendamiento + resumen ---------- */
+.page-shell {
+    position: relative;
+    z-index: 1;
+    padding: 56px 0 90px;
+}
+
+.booking-card {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 24px;
+    align-items: start;
+    padding: 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.booking-form-panel h1 {
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    margin-bottom: 10px;
+}
+
+.booking-form-panel .lead {
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 24px;
+}
+
+.booking-summary {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 24px;
+}
+
+.summary-title {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    color: var(--text);
+}
+
+.summary-list {
+    display: grid;
+    gap: 14px;
+}
+
+.summary-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.summary-item .icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: rgba(0,240,255,0.12);
+    color: var(--cyan);
+    flex-shrink: 0;
+}
+
+.summary-item strong {
+    display: block;
+    margin-bottom: 4px;
+    color: var(--text);
+}
+
+.summary-item span {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.field textarea {
+    width: 100%;
+    min-height: 120px;
+    resize: vertical;
+    padding: 13px 16px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--bg-panel-2);
+    color: var(--text);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.field textarea:focus {
+    border-color: var(--cyan);
+    box-shadow: 0 0 0 3px rgba(0,240,255,0.12);
+}
+
+.form-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.status-message {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.status-message.success {
+    background: rgba(84, 255, 179, 0.12);
+    border: 1px solid rgba(84, 255, 179, 0.28);
+    color: #b8ffdc;
+}
+
+.status-message.error {
+    background: rgba(255,46,146,0.1);
+    border: 1px solid rgba(255,46,146,0.28);
+    color: #ffb0d1;
+}
+
+.status-message::before {
+    content: "!";
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: inline-grid;
+    place-items: center;
+    background: currentColor;
+    color: #050608;
+    font-weight: 700;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.empty-state {
+    padding: 16px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.04);
+    border: 1px dashed var(--line);
+    color: var(--muted);
+}
+
+@media (max-width: 900px) {
+    .booking-card {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .page-shell {
+        padding-top: 32px;
+    }
+
+    .booking-card {
+        padding: 20px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- Dashboard de "Mis citas" (mismo patrón que los demás dashboards) ---------- */
+.wrap.dash-wide {
+    max-width: 1500px;
+}
+
+/* ---------- Encabezado ---------- */
+.dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: 48px 0 28px;
+}
+
+.dash-header h1 {
+    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+    line-height: 1.15;
+    font-weight: 700;
+    margin: 8px 0 0;
+}
+
+/* El botón "Agendar Cita" (círculo "+" relleno + etiqueta con contorno
+   verde) ahora vive en componentes.css como .dash-fab-text, reutilizado
+   por todos los dashboards con botón de agregar. */
+
+/* ---------- Layout: sidebar + contenido ---------- */
+.dash-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+@media (max-width: 860px) {
+    .dash-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-weight: 500;
+    font-size: 0.92rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* ---------- Sidebar de filtros ---------- */
+.dash-sidebar {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: sticky;
+    top: 24px;
+}
+
+.dash-sidebar h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-family: var(--font-display);
+}
+
+.dash-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.dash-filter-group label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+.dash-sidebar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.dash-sidebar-actions .btn-primary {
+    width: 100%;
+    text-align: center;
+}
+
+.dash-sidebar-actions .btn-cancel {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* ---------- Contenido principal ---------- */
+.dash-main {
+    min-width: 0;
+}
+
+.dash-search {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.dash-search input {
+    flex: 1;
+}
+
+.dash-search input::placeholder {
+    font-weight: 700;
+}
+
+.dash-results-count {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 14px;
+}
+
+/* ---------- Tabla de citas: todo centrado, salvo Doctor ---------- */
+.dash-main table th,
+.dash-main table td {
+    text-align: center;
+}
+
+.dash-main table tbody td:nth-child(2) {
+    text-align: left;
+}
+
+/* ---------- Modal genérico (agendar cita) ---------- */
+.dash-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(9, 11, 18, 0.82);
+    backdrop-filter: blur(6px);
+    z-index: 10000;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px;
+    overflow-y: auto;
+}
+
+.dash-modal-overlay.active {
+    display: flex;
+}
+
+.dash-modal-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 24px 26px;
+    width: 100%;
+    max-width: 640px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    animation: dashModalIn 0.2s ease-out;
+}
+
+@keyframes dashModalIn {
+    from { opacity: 0; transform: translateY(-10px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.dash-modal-head {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.dash-modal-close {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 8px;
+}
+
+.dash-modal-close:hover {
+    background: var(--bg-panel-2);
+    color: var(--text);
+}
+
+.dash-hint {
+    opacity: 0.55;
+    font-weight: 400;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dash-modal-card, .dash-fab-text { animation: none; transition: none; }
+}
+
+/* ---------- Modal de confirmación de cancelación (mismo patrón que inventario.php / usuarios.php) ---------- */
+.custom-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 14, 23, 0.85);
+    backdrop-filter: blur(6px);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-modal-overlay.active {
+    display: flex;
+}
+
+.custom-modal-card {
+    background: #121826;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 28px;
+    max-width: 480px;
+    width: 90%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    text-align: center;
+}
+
+.custom-modal-card h3 {
+    color: #ffffff;
+    font-size: 1.15rem;
+    margin-bottom: 12px;
+}
+
+.custom-modal-card p {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.custom-modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.btn-modal-cancel {
+    background: rgba(255, 255, 255, 0.08);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-modal-cancel:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.btn-modal-confirm {
+    background: #e11d48;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: inline-block;
+}
+
+.btn-modal-confirm:hover {
+    background: #f43f5e;
+    box-shadow: 0 0 12px rgba(225, 29, 72, 0.4);
+}

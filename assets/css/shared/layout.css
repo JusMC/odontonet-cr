@@ -1,0 +1,285 @@
+/*
+   layout.css — Navbar (header/nav) y footer, compartidos entre index.php
+   y cualquier otra página que use el mismo encabezado/pie de página.
+*/
+
+/* ---------- NAV ---------- */
+
+/* El header se queda pegado arriba al hacer scroll (sticky) y tiene un
+   fondo semitransparente con blur, para que el contenido se vea
+   "detrás de un vidrio esmerilado" cuando el usuario baja la página. */
+
+    header{
+        position:sticky;
+        top:0;
+        z-index:50; /* Muy por encima de todo lo demás, para quedar siempre visible */
+        backdrop-filter:blur(14px);
+        background:rgba(9,11,18,0.72);
+        border-bottom:1px solid var(--line);
+    }
+
+    nav{
+        display:flex;
+        align-items:center;
+        justify-content:space-between; /* Logo a la izquierda, links al centro, acciones a la derecha */
+        padding:18px 32px;
+        max-width:1400px; /* Más ancho que .wrap (1180px) para que quepan todos los links del navbar de administrador sin partirse en dos líneas */
+        margin:0 auto;
+    }
+
+    /* ---------- Logo (Imagen de OdontoNet) ---------- */
+    .logo{
+        display:flex;
+        align-items:center;
+    }
+
+    .logo-img{
+        height:38px;   /* Ajustar este valor si se ve muy grande/pequeño junto al resto del navbar */
+        width:auto;
+        display:block;
+    }
+
+    /* ---------- Enlaces de navegación (Servicios, Beneficios, etc.) ---------- */
+    .nav-links{
+        display:flex;
+        gap:30px;
+        font-size:0.88rem;
+        color:var(--muted);
+    }
+
+    /* El navbar de administrador tiene muchos links (Admin, Usuarios, Gestión
+       citas, Inventario, Bitácora + los universales); evita que el texto de
+       cada uno se parta en dos líneas cuando el espacio se ajusta. */
+    .nav-links a{
+        white-space:nowrap;
+    }
+
+    .nav-links a:hover{
+        color:var(--cyan);
+    }
+
+    .nav-links a.active{
+        color:#3088d5;
+    }
+
+    /* ---------- Desplegables por rol (Admin / Doctor / Recepcionista) ---------- */
+    .nav-dropdown{
+        position:relative;
+    }
+
+    .nav-dropdown-toggle{
+        display:inline-flex;
+        align-items:center;
+        gap:6px;
+        background:none;
+        border:none;
+        padding:0;
+        margin:0;
+        font:inherit;
+        font-size:inherit;
+        color:var(--muted);
+        cursor:pointer;
+        white-space:nowrap;
+    }
+
+    .nav-dropdown-toggle:hover,
+    .nav-dropdown-toggle:focus-visible{
+        color:var(--cyan);
+    }
+
+    .nav-dropdown-toggle.active{
+        color:#3088d5;
+    }
+
+    .nav-dropdown-toggle .caret{
+        width:9px;
+        height:9px;
+        flex-shrink:0;
+        transition:transform .18s ease;
+    }
+
+    .nav-dropdown.open .nav-dropdown-toggle .caret{
+        transform:rotate(180deg);
+    }
+
+    .nav-dropdown-menu{
+        position:absolute;
+        top:calc(100% + 18px);
+        left:50%;
+        transform:translateX(-50%) translateY(-6px);
+        min-width:210px;
+        background:rgba(9,11,18,0.96);
+        backdrop-filter:blur(14px);
+        border:1px solid var(--line);
+        border-radius:14px;
+        padding:8px;
+        display:flex;
+        flex-direction:column;
+        gap:2px;
+        opacity:0;
+        visibility:hidden;
+        pointer-events:none;
+        transition:opacity .16s ease, transform .16s ease, visibility .16s;
+        box-shadow:0 20px 40px rgba(0,0,0,0.45);
+        z-index:60;
+    }
+
+    .nav-dropdown.open .nav-dropdown-menu{
+        opacity:1;
+        visibility:visible;
+        pointer-events:auto;
+        transform:translateX(-50%) translateY(0);
+    }
+
+    .nav-dropdown-menu a{
+        padding:9px 14px;
+        border-radius:8px;
+        font-size:0.88rem;
+        color:var(--muted);
+        white-space:nowrap;
+    }
+
+    .nav-dropdown-menu a:hover,
+    .nav-dropdown-menu a:focus-visible{
+        background:rgba(0,240,255,0.08);
+        color:var(--cyan);
+    }
+
+    .nav-dropdown-menu a.active{
+        background:rgba(48,136,213,0.12);
+        color:#3088d5;
+    }
+
+    /* ---------- Botón de perfil (desplegable con datos de la cuenta) ----------
+       Orden visual: nombre + rol (columna, texto) a la izquierda, foto/ícono
+       más grande a la derecha. */
+    .nav-settings-toggle{
+        gap:10px;
+    }
+
+    .nav-settings-toggle i{
+        font-size:2rem;
+        line-height:1;
+    }
+
+    .nav-settings-avatar{
+        width:38px;
+        height:38px;
+        border-radius:50%;
+        object-fit:cover;
+        flex-shrink:0;
+    }
+
+    .nav-settings-textos{
+        display:flex;
+        flex-direction:column;
+        align-items:flex-end;
+        line-height:1.3;
+    }
+
+    .nav-settings-nombre{
+        font-size:0.88rem;
+        font-weight:600;
+        color:var(--text);
+    }
+
+    .nav-settings-rol{
+        font-size:0.7rem;
+        font-weight:700;
+        text-transform:uppercase;
+        letter-spacing:0.03em;
+    }
+
+    .nav-settings-menu{
+        min-width:240px;
+    }
+
+    .nav-settings-info{
+        padding:8px 14px 12px;
+        display:flex;
+        flex-direction:column;
+        gap:3px;
+    }
+
+    .nav-settings-info strong{
+        color:var(--text);
+        font-size:0.92rem;
+        font-weight:600;
+    }
+
+    .nav-settings-info span{
+        color:var(--muted);
+        font-size:0.8rem;
+        overflow-wrap:anywhere;
+    }
+
+    .nav-settings-divider{
+        height:1px;
+        background:var(--line);
+        margin:2px 6px 6px;
+    }
+
+    @media (prefers-reduced-motion: reduce){
+        .nav-dropdown-toggle .caret,
+        .nav-dropdown-menu{
+            transition:none;
+        }
+    }
+
+    /* Botón "Agendar cita" del navbar: píldora con degradado */
+    .nav-cta{
+        padding:10px 22px;
+        border-radius:100px;
+        background:var(--grad-1);
+        color:#050608;
+        font-weight:600;
+        font-size:0.88rem;
+        box-shadow:0 0 0 1px rgba(255,255,255,0.06), 0 8px 24px rgba(0,240,255,0.18);
+        transition:transform .2s ease, box-shadow .2s ease;
+    }
+    .nav-cta:hover{ transform:translateY(-2px); box-shadow:0 0 0 1px rgba(255,255,255,0.1), 0 12px 30px rgba(0,240,255,0.3);}
+
+    /* Botón "hamburguesa" para menú móvil: reservado para cuando se agregue
+    un menú responsive real; por ahora está oculto/sin usar. */
+    .burger{display:none;}
+
+    /* ---------- FOOTER ---------- */
+    footer{
+        border-top:1px solid var(--line);
+        padding:56px 0 30px;
+        position:relative; 
+        z-index:1; /* Por encima de los fondos decorativos */
+    }
+
+    /* Grilla de 4 columnas: marca, explorar, clínica, contacto */
+    .footer-grid{
+        display:grid;
+        grid-template-columns:1.4fr 1fr 1fr 1fr;
+        gap:40px;
+        padding-bottom:40px;
+    }
+
+    .footer-grid h4{
+        font-size:0.85rem;
+        color:var(--text);
+        margin-bottom:16px;
+        font-weight:600;
+    }
+
+    .footer-grid ul{ list-style:none; }
+    .footer-grid li{ margin-bottom:10px; }
+    .footer-grid a{ color:var(--muted); font-size:0.88rem; transition:color .2s; }
+    .footer-grid a:hover{ color:var(--cyan); }
+
+    /* Línea inferior del footer: copyright + "Proyecto académico..." */
+    .footer-bottom{
+        display:flex;
+        justify-content:space-between;
+        align-items:center;
+        padding-top:24px;
+        border-top:1px solid var(--line);
+        color:var(--muted);
+        font-size:0.8rem;
+        flex-wrap:wrap; /* Para que no se encimen en pantallas angostas */
+        gap:10px;
+    }

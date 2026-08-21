@@ -1,3 +1,9 @@
 .vercel
 .env
 vendor/
+
+# Credenciales y configuración sensible — nunca deben subirse al repositorio
+assets/includes/config/oauth_config.php
+assets/includes/config/stripe_config.php
+assets/includes/config/mail_config.php
+assets/includes/config/mfa_config.php

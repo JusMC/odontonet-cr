@@ -1,0 +1,192 @@
+/* Adaptación de inputs, selects y textareas al tema oscuro */
+input[type="text"],
+input[type="date"],
+input[type="time"],
+input[type="number"],
+select,
+textarea {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    color: #f3f4f6 !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 8px;
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    color-scheme: dark; /* Adapta los desplegables e íconos nativos al modo oscuro */
+    font-family: inherit;
+    resize: vertical;
+}
+
+/* Opciones dentro de los elementos <select> */
+select option {
+    background-color: #0f172a !important;
+    color: #ffffff !important;
+}
+
+/* Color del texto sugerido / placeholder */
+input::placeholder {
+    color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* Enfoque al hacer clic en los campos de entrada */
+input:focus,
+select:focus {
+    outline: none !important;
+    border-color: var(--primary, #4F46E5) !important;
+    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.3) !important;
+}
+
+/* Disposición y Contenedores */
+.citas-hero {
+    padding: 80px 0 40px;
+    position: relative;
+    z-index: 1;
+}
+
+.citas-form-wrap {
+    max-width: 900px;
+    margin: 0 auto 60px auto;
+}
+
+.citas-card {
+    padding: 32px;
+}
+
+.citas-section-head {
+    text-align: left;
+    margin-bottom: 24px;
+}
+
+.grid-dos-columnas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+}
+
+.grid-servicio {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.caja-precio-servicio {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.caja-precio-servicio .label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    display: block;
+}
+
+.caja-precio-servicio .precio {
+    font-size: 1.4rem;
+    color: var(--primary, #4F46E5);
+    margin-top: 4px;
+    display: block;
+}
+
+.grid-horarios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+.insumo-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-bottom: 32px;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.insumo-container label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.form-actions {
+    display: flex;
+    gap: 16px;
+    justify-content: flex-end;
+}
+
+.btn-guardar {
+    cursor: pointer;
+    border: none;
+    padding: 12px 32px;
+}
+
+/* Encabezado y búsqueda de la tabla de historial */
+.historial-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.historial-header .sec-head {
+    text-align: left;
+    margin-bottom: 0;
+}
+
+.buscar-cita-container {
+    min-width: 280px;
+    max-width: 400px;
+    width: 100%;
+}
+
+.buscar-cita-container input {
+    padding: 10px 16px;
+}
+
+/* Paginación */
+.paginacion-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.paginacion-info {
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+
+.paginacion-botones {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-paginacion {
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    cursor: pointer;
+}
+
+.btn-paginacion:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-paginacion.activo {
+    background: var(--primary, #4F46E5);
+    font-weight: bold;
+}

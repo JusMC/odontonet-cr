@@ -1,0 +1,23 @@
+/* compra_pago_cancelado.css — Tarjeta base ".compra-box" reutilizada por
+   compra.php (con modificadores para carrito vacío, lista de productos y
+   resumen) y por pago_cancelado.php (bloque "¿Qué quieres hacer ahora?"). */
+
+.compra-box {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 26px 28px;
+    position: relative;
+    z-index: 1;
+}
+
+.compra-box h2 {
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+@media (max-width: 640px) {
+    .compra-box {
+        padding: 22px 18px;
+    }
+}

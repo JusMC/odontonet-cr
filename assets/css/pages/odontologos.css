@@ -1,0 +1,212 @@
+/* odontologos.css — Estilos exclusivos del dashboard de odontologos.php
+   (mismo patrón que los demás dashboards; sin FAB/modal porque esta
+   pantalla es de solo lectura — para crear/editar doctores se usa
+   Gestión de Usuarios). Reutiliza gestionCitas.css (ya cargado) para
+   .citas-card/.grid-dos-columnas/etc. dentro de cada tarjeta de doctor. */
+
+.wrap.dash-wide {
+    max-width: 1500px;
+}
+
+/* ---------- Encabezado ---------- */
+.dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: 48px 0 28px;
+}
+
+.dash-header h1 {
+    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+    line-height: 1.15;
+    font-weight: 700;
+    margin: 8px 0 0;
+}
+
+/* ---------- Layout: sidebar + contenido ---------- */
+.dash-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+@media (max-width: 860px) {
+    .dash-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- Botón secundario "Limpiar filtros" ---------- */
+.btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-weight: 500;
+    font-size: 0.92rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* ---------- Sidebar de filtros ---------- */
+.dash-sidebar {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: sticky;
+    top: 24px;
+}
+
+.dash-sidebar h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-family: var(--font-display);
+}
+
+.dash-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.dash-filter-group label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+.dash-checkbox-label {
+    display: flex !important;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    user-select: none;
+}
+
+/* Checkbox propio de OdontoNet: cuadro oscuro redondeado que, al marcarse,
+   se llena con el degradado de marca y muestra un check oscuro — mismo
+   lenguaje visual que el botón flotante "+" de los otros dashboards. */
+.dash-checkbox-label input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    min-width: 20px;
+    margin: 0;
+    border-radius: 6px;
+    border: 1px solid var(--line);
+    background: var(--bg-panel-2);
+    position: relative;
+    cursor: pointer;
+    transition: background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.dash-checkbox-label input[type="checkbox"]:hover {
+    border-color: var(--cyan);
+}
+
+.dash-checkbox-label input[type="checkbox"]:checked {
+    background: var(--grad-1);
+    border-color: transparent;
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.35);
+}
+
+.dash-checkbox-label input[type="checkbox"]:checked::after {
+    content: "";
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 5px;
+    height: 10px;
+    border: solid #050608;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.dash-checkbox-label input[type="checkbox"]:focus-visible {
+    outline: 2px solid var(--cyan);
+    outline-offset: 2px;
+}
+
+/* Badge distintivo para usuarios que fueron doctores pero ya cambiaron de rol. */
+.badge-antiguo {
+    background: rgba(138, 147, 166, 0.18);
+    color: var(--muted);
+}
+
+.dash-sidebar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.dash-sidebar-actions .btn-primary {
+    width: 100%;
+    text-align: center;
+}
+
+.dash-sidebar-actions .btn-cancel {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* ---------- Contenido principal ---------- */
+.dash-main {
+    min-width: 0;
+}
+
+.dash-search {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.dash-search input {
+    flex: 1;
+}
+
+.dash-search input::placeholder {
+    font-weight: 700;
+}
+
+.dash-hint-nota {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 18px;
+}
+
+.dash-results-count {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 14px;
+}
+
+/* ---------- Tarjeta de doctor: alineación de la fila de citas ---------- */
+.dash-main table th,
+.dash-main table td {
+    text-align: center;
+}
+
+.dash-main table tbody td:nth-child(2) {
+    text-align: left;
+}

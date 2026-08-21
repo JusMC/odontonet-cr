@@ -1,0 +1,144 @@
+/* ventas.css — Estilos exclusivos del dashboard de ventas.php (solo
+   lectura, sin FAB/modal: aquí no se crean ventas a mano, se generan
+   desde facturar_servicios.php / compra.php). */
+
+.wrap.dash-wide {
+    max-width: 1500px;
+}
+
+/* ---------- Encabezado ---------- */
+.dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: 48px 0 28px;
+}
+
+.dash-header h1 {
+    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+    line-height: 1.15;
+    font-weight: 700;
+    margin: 8px 0 0;
+}
+
+/* ---------- Layout: sidebar + contenido ---------- */
+.dash-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+@media (max-width: 860px) {
+    .dash-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-weight: 500;
+    font-size: 0.92rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* ---------- Sidebar de filtros ---------- */
+.dash-sidebar {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: sticky;
+    top: 24px;
+}
+
+.dash-sidebar h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-family: var(--font-display);
+}
+
+.dash-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.dash-filter-group label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+.dash-sidebar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.dash-sidebar-actions .btn-primary {
+    width: 100%;
+    text-align: center;
+}
+
+.dash-sidebar-actions .btn-cancel {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* ---------- Contenido principal ---------- */
+.dash-main {
+    min-width: 0;
+}
+
+.dash-search {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.dash-search input {
+    flex: 1;
+}
+
+.dash-search input::placeholder {
+    font-weight: 700;
+}
+
+.dash-results-count {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 14px;
+}
+
+/* ---------- Tabla de ventas: todo centrado, salvo Paciente ---------- */
+.dash-main table th,
+.dash-main table td {
+    text-align: center;
+}
+
+.dash-main table tbody td:nth-child(2) {
+    text-align: left;
+}

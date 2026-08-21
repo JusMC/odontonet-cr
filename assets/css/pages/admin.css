@@ -1,0 +1,250 @@
+/* admin.css — Estilos exclusivos del panel de control (admin.php):
+   tarjetas de estadísticas, gráficos ligeros en CSS puro y accesos
+   directos agrupados por rol. El encabezado (.admin-hero) es compartido
+   con permisos.php — ver assets/css/shared/admin_hero.css. */
+
+/* ---------- Tarjetas de estadísticas (KPIs) ---------- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.stat-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 24px;
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.stat-icon {
+    flex-shrink: 0;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    background: var(--bg-panel-2);
+}
+
+.stat-icon-cyan { color: var(--cyan); }
+.stat-icon-lime { color: var(--lime); }
+.stat-icon-violet { color: var(--violet); }
+.stat-icon-pink { color: var(--pink); }
+
+.stat-value {
+    display: block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.15;
+}
+
+.stat-label {
+    font-size: 0.82rem;
+    color: var(--muted);
+}
+
+/* ---------- Grid de reportes/gráficos ---------- */
+.reports-grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr 1fr;
+    gap: 22px;
+    align-items: stretch;
+}
+
+.chart-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 22px;
+}
+
+/* Gráfico de barras: citas de los últimos 7 días */
+.bar-chart-7d {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+    height: 150px;
+}
+
+.bar-chart-7d .bar-col {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.bar-chart-7d .bar {
+    width: 100%;
+    max-width: 30px;
+    min-height: 4px;
+    border-radius: 8px 8px 3px 3px;
+    background: var(--grad-1);
+    transition: opacity 0.2s ease;
+}
+
+.bar-chart-7d .bar-col:hover .bar {
+    opacity: 0.75;
+}
+
+.bar-chart-7d .bar-value {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--text);
+}
+
+.bar-chart-7d .bar-label {
+    font-size: 0.72rem;
+    color: var(--muted);
+}
+
+/* Distribución: citas por estado */
+.estado-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.estado-bar-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.82rem;
+    margin-bottom: 6px;
+}
+
+.estado-bar-top span:first-child {
+    color: var(--text);
+}
+
+.estado-bar-top span:last-child {
+    color: var(--muted);
+    font-family: var(--font-mono);
+}
+
+.estado-bar-track {
+    height: 8px;
+    border-radius: 100px;
+    background: var(--bg-panel-2);
+    overflow: hidden;
+}
+
+.estado-bar-fill {
+    height: 100%;
+    border-radius: 100px;
+}
+
+/* Reporte: productos con bajo stock */
+.stock-alert-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stock-alert-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    background: var(--bg-panel-2);
+    border-radius: 12px;
+    font-size: 0.85rem;
+}
+
+.stock-alert-item .stock-nombre {
+    color: var(--text);
+    font-weight: 500;
+}
+
+.stock-alert-item .stock-count {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    color: #e74c3c;
+}
+
+.empty-state-mini {
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 30px 0;
+}
+
+/* ---------- Accesos directos agrupados por rol ---------- */
+.quick-links-group {
+    margin-bottom: 30px;
+}
+
+.quick-links-group:last-child {
+    margin-bottom: 0;
+}
+
+.quick-links-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 16px;
+}
+
+.quick-links-title i {
+    color: var(--cyan);
+}
+
+.quick-links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 14px;
+}
+
+.quick-link-tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    padding: 22px 12px;
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.quick-link-tile:hover {
+    transform: translateY(-4px);
+    border-color: rgba(0, 240, 255, 0.35);
+}
+
+.quick-link-tile i {
+    font-size: 1.4rem;
+    color: var(--cyan);
+}
+
+.quick-link-tile span {
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1080px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .reports-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 560px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .quick-links-grid { grid-template-columns: repeat(2, 1fr); }
+}

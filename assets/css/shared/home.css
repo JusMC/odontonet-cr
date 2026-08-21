@@ -1,0 +1,373 @@
+/*
+   home.css — Estilos EXCLUSIVOS del index.php (la landing page pública).
+ 
+   A diferencia de layout.css o componentes.css (compartidos por varias
+   páginas), todo lo que está aquí solo se usa en la página de inicio:
+   el hero, la tarjeta de "monitor" animada, las tarjetas de servicios,
+   la sección de beneficios, los pasos de "cómo funciona" y el CTA final.
+*/
+
+/* ---------- HERO ---------- */
+
+/* Dos columnas: texto de venta a la izquierda, panel visual decorativo
+   a la derecha. En pantallas angostas se convierte en una sola columna
+   (ver el media query al final del archivo). */
+    .hero{
+        position:relative;
+        z-index:1;
+        padding:110px 0 90px;
+        display:grid;
+        grid-template-columns:1.05fr 0.95fr;
+        gap:40px;
+        align-items:center;
+    }
+
+    .hero h1{
+        font-size:clamp(2.4rem, 4.6vw, 4rem); /* Tamaño fluido: crece con el ancho de pantalla pero con límites */
+        line-height:1.04;
+        font-weight:700;
+        margin:20px 0 22px;
+    }
+
+    /* Parte del título en degradado de color (".grad" envuelve solo esa frase) */
+    .hero h1 .grad{
+        background:var(--grad-1);
+        -webkit-background-clip:text;
+        background-clip:text;
+        color:transparent;
+    }
+
+    .hero p.lead{
+        color:var(--muted);
+        font-size:1.08rem;
+        max-width:520px;
+        line-height:1.6;
+        margin-bottom:34px;
+    }
+
+    .hero-ctas{
+        display:flex;
+        gap:16px;
+        flex-wrap:wrap; /* Los botones bajan de línea si no caben, en vez de desbordar */
+    }
+
+    /* Fila de estadísticas debajo de los botones del hero (+2,400 / 98% / <5s) */
+    .hero-stats{
+        display:flex;
+        gap:36px;
+        margin-top:56px;
+        padding-top:28px;
+        border-top:1px solid var(--line);
+        max-width:520px;
+    }
+
+    .hero-stats div strong{
+        display:block;
+        font-family:'Space Grotesk', sans-serif;
+        font-size:1.5rem;
+        color:var(--cyan);
+    }
+
+    .hero-stats div span{
+        font-size:0.8rem;
+        color:var(--muted);
+    }
+
+
+    /* ---- Panel visual "monitor de paciente" (línea que se dibuja sola) ---- */
+    .signature{
+        position:relative;
+        height:460px;
+        border-radius:28px;
+        background:linear-gradient(180deg, var(--bg-panel), var(--bg-panel-2));
+        border:1px solid var(--line);
+        overflow:hidden;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+    }
+
+    /* Dos manchas de color radiales de fondo, solo dentro de este panel
+    (distinto de los .glow globales, que son de toda la página) */
+    .signature::before{
+        content:"";
+        position:absolute;
+        inset:0;
+        background:
+        radial-gradient(circle at 30% 20%, rgba(0,240,255,0.16), transparent 55%),
+        radial-gradient(circle at 80% 80%, rgba(255,46,146,0.16), transparent 55%);
+    }
+
+    /* Etiqueta "monitor_paciente.live" en la esquina superior izquierda,
+    con un punto verde-lima que pulsa como si estuviera "en vivo" */
+    .signature-tag{
+        position:absolute;
+        top:22px; left:22px;
+        font-family:'JetBrains Mono', monospace;
+        font-size:0.72rem;
+        color:var(--muted);
+        display:flex; align-items:center; gap:8px;
+    }
+
+    .signature-tag .dot{
+        width:7px; height:7px; border-radius:50%;
+        background:var(--lime);
+        box-shadow:0 0 8px var(--lime);
+        animation:pulse-dot 1.6s infinite;
+    }
+
+    @keyframes pulse-dot{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+    /* La línea tipo electrocardiograma que se "dibuja" en bucle infinito. */
+    svg.scanline{ position:relative; z-index:1; width:88%; }
+
+    .scan-path{
+        fill:none;
+        stroke:url(#lineGrad); /* Usa el gradiente <linearGradient id="lineGrad"> definido dentro del SVG en el HTML */
+        stroke-width:3;
+        stroke-linecap:round;
+        stroke-linejoin:round;
+        stroke-dasharray:900;
+        stroke-dashoffset:900;
+        animation:draw 3.2s ease-in-out infinite;
+        filter:drop-shadow(0 0 8px rgba(0,240,255,0.6));
+    }
+
+    @keyframes draw{
+        0%{stroke-dashoffset:900;}  /* Línea completamente "escondida" */
+        55%{stroke-dashoffset:0;}   /* Se termina de dibujar */
+        85%{stroke-dashoffset:0; opacity:1;}    /* Se queda visible un momento */
+        100%{stroke-dashoffset:-900; opacity:0.4;}  /* Se "borra" hacia el otro lado y se desvanece, listo para reiniciar */
+    }
+
+    /* Texto descriptivo en la esquina inferior del panel */
+    .signature-caption{
+        position:absolute;
+        bottom:22px; left:22px; right:22px;
+        display:flex; justify-content:space-between; align-items:flex-end;
+    }
+
+    .signature-caption p{
+        font-size:0.82rem; color:var(--muted); max-width:260px; line-height:1.5;
+    }
+
+    .signature-caption strong{
+        font-family:'Space Grotesk', sans-serif;
+        font-size:0.95rem;
+        color:var(--text);
+        display:block; margin-bottom:4px;
+    }
+
+    /* ---------- SERVICIOS (tarjetas con ícono) ---------- */
+    .services-grid{
+        display:grid;
+        grid-template-columns:repeat(3, 1fr); /* 3 columnas en escritorio */
+        gap:22px;
+    }
+
+    .service-card{
+        background:var(--bg-panel);
+        border:1px solid var(--line);
+        border-radius:20px;
+        padding:30px 26px;
+        transition:transform .25s ease, border-color .25s ease, background .25s ease;
+        position:relative;
+        overflow:hidden;
+    }
+
+    /* Capa de degradado que aparece detrás de la tarjeta al pasar el mouse
+    (queda oculta con z-index:-1 y opacity:0 hasta el :hover) */
+    .service-card::after{
+        content:"";
+        position:absolute; inset:0;
+        background:var(--grad-2);
+        opacity:0;
+        transition:opacity .3s ease;
+        z-index:-1;
+    }
+
+    .service-card:hover{
+        transform:translateY(-6px); /* La tarjeta "flota" un poco al pasar el mouse */
+        border-color:rgba(255,46,146,0.4);
+    }
+
+    .service-icon{
+        width:64px; height:64px;
+        border-radius:16px;
+        background:var(--bg-panel-2);
+        display:flex; align-items:center; justify-content:center;
+        margin-bottom:20px;
+        border:1px solid var(--line);
+    }
+
+    .service-icon img{ width:38px; height:38px; }
+
+    .service-card h3{
+        font-size:1.12rem;
+        margin-bottom:10px;
+        font-weight:600;
+    }
+
+    .service-card p{
+        color:var(--muted);
+        font-size:0.92rem;
+        line-height:1.55;
+    }
+
+    /* ---------- BENEFICIOS ---------- */
+    /* Dos columnas: lista de razones a la izquierda, panel de KPIs a la derecha */
+    .benefits{
+        display:grid;
+        grid-template-columns:0.9fr 1.1fr;
+        gap:60px;
+        align-items:center;
+    }
+
+    .benefit-row{
+        display:flex;
+        gap:18px;
+        padding:22px 0;
+        border-top:1px solid var(--line);
+    }
+
+    .benefit-row:last-child{border-bottom:1px solid var(--line);}
+
+    .benefit-icon{
+        width:52px; height:52px;
+        min-width:52px; /* Evita que el ícono se achique si el texto es largo */
+        border-radius:14px;
+        background:var(--bg-panel);
+        border:1px solid var(--line);
+        display:flex; align-items:center; justify-content:center;
+    }
+
+    .benefit-icon img{width:30px; height:30px;}
+
+    .benefit-row h3{ font-size:1.02rem; margin-bottom:6px; }
+
+    .benefit-row p{ color:var(--muted); font-size:0.9rem; line-height:1.55; }
+
+    /* Panel derecho con los 4 indicadores (KPIs) */
+    .benefits-panel{
+        background:linear-gradient(160deg, var(--bg-panel), var(--bg-panel-2));
+        border:1px solid var(--line);
+        border-radius:24px;
+        padding:36px;
+        height:100%;
+    }
+
+    .benefits-panel .kpi-grid{
+        display:grid;
+        grid-template-columns:1fr 1fr; /* 2x2 */
+        gap:18px;
+        margin-top:24px;
+    }
+
+    .kpi{
+        background:var(--bg);
+        border:1px solid var(--line);
+        border-radius:16px;
+        padding:20px;
+    }
+
+    .kpi strong{
+        font-family:'Space Grotesk', sans-serif;
+        font-size:1.7rem;
+        background:var(--grad-1);
+        -webkit-background-clip:text;
+        background-clip:text;
+        color:transparent;
+        display:block;
+    }
+
+    .kpi span{ color:var(--muted); font-size:0.8rem; }
+
+    /* ---------- COMO FUNCIONA (4 pasos numerados) ---------- */
+    .steps{
+        display:grid;
+        grid-template-columns:repeat(4, 1fr);
+        gap:20px;
+    }
+
+    .step{
+        background:var(--bg-panel);
+        border:1px solid var(--line);
+        border-radius:20px;
+        padding:26px 22px;
+        position:relative;
+    }
+
+    .step .num{
+        font-family:'JetBrains Mono', monospace;
+        font-size:0.78rem;
+        color:var(--pink);
+        margin-bottom:16px;
+        display:block;
+    }
+
+    .step .step-icon img{ width:34px; height:34px; margin-bottom:16px; }
+    .step h3{ font-size:1rem; margin-bottom:8px; }
+    .step p{ color:var(--muted); font-size:0.86rem; line-height:1.5; }
+
+    /* Línea conectora entre pasos (solo visible en escritorio, ver media
+    query de abajo). Está oculta por defecto (display:none) porque en
+    móvil los pasos se apilan en una sola columna y la línea no aplica. */
+    .step:not(:last-child)::after{
+        content:"";
+        position:absolute;
+        right:-20px; top:50%;
+        width:20px; height:1px;
+        background:var(--line);
+        display:none;
+    }
+
+    /* ---------- CTA final ---------- */
+    .cta-section{
+        background:linear-gradient(135deg, rgba(0,240,255,0.08), rgba(255,46,146,0.08));
+        border:1px solid var(--line);
+        border-radius:28px;
+        padding:64px;
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:40px;
+        flex-wrap:wrap;
+    }
+
+    .cta-section h2{ font-size:clamp(1.6rem, 3vw, 2.2rem); max-width:480px; }
+    .cta-section p{ color:var(--muted); margin-top:12px; max-width:460px; }
+
+    /* ---------- RESPONSIVE ---------- */
+    /* De más ancho a más angosto: primero se reduce a 2 columnas donde tenga
+       sentido, y en el último breakpoint (móvil) casi todo pasa a 1 columna. */
+    @media(max-width:980px){
+        .hero{ grid-template-columns:1fr; padding-top:60px; } /* Hero pasa a 1 columna: texto arriba, panel visual abajo */
+        .services-grid{ grid-template-columns:repeat(2,1fr); }
+        .benefits{ grid-template-columns:1fr; }
+        .steps{ grid-template-columns:repeat(2,1fr); }
+        .footer-grid{ grid-template-columns:1fr 1fr; }
+    }
+
+    @media(max-width:640px){
+        .nav-links{ display:none; } /* En móvil se ocultan los links de texto (pendiente: agregar menú hamburguesa real) */
+        .wrap{ padding:0 20px; }
+        .services-grid{ grid-template-columns:1fr; }
+        .steps{ grid-template-columns:1fr; }
+        .footer-grid{ grid-template-columns:1fr; }
+        .cta-section{ padding:38px 26px; flex-direction:column; align-items:flex-start; }
+        .hero-stats{ gap:22px; }
+    }
+
+    /* Para personas con movimiento reducido activado en su sistema operativo,
+    se desactivan las animaciones (accesibilidad). */
+    @media (prefers-reduced-motion: reduce){
+        .scan-path{ animation:none; stroke-dashoffset:0; }
+        .signature-tag .dot{ animation:none; }
+        html{ scroll-behavior:auto; }
+    }
+
+    /* A partir de 900px sí se muestra la línea conectora entre pasos */
+    @media(min-width:900px){
+        .step:not(:last-child)::after{ display:block; }
+    }
+

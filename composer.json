@@ -1,4 +1,7 @@
 {
+    "name": "jusmc/odontonet",
+    "description": "OdontoNet - Sistema de gestion de clinica dental",
+    "license": "proprietary",
     "require": {
         "phpmailer/phpmailer": "^7.1",
         "spomky-labs/otphp": "^11.5"

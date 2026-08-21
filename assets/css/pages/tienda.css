@@ -1,0 +1,352 @@
+/*
+    tienda.css — Estilos exclusivos de tienda.php: dashboard con sidebar
+    de filtros, buscador, carrito flotante y grid de tarjetas de producto.
+
+    El encabezado (.dash-header) y el contador de resultados
+    (.dash-results-count) son compartidos con compra.php — ver
+    assets/css/shared/tienda_compra.css.
+*/
+
+/* ---------- Layout: sidebar + contenido ---------- */
+.dash-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+@media (max-width: 860px) {
+    .dash-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- Carrito flotante (esquina superior derecha, fijo) ---------- */
+.carrito-flotante {
+    position: fixed;
+    top: 92px;
+    right: 24px;
+    z-index: 45;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.carrito-flotante:hover {
+    transform: translateY(-3px);
+    border-color: var(--cyan);
+}
+
+.carrito-badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: #e74c3c;
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+    border: 2px solid var(--bg);
+}
+
+@media (max-width: 640px) {
+    .carrito-flotante {
+        top: 78px;
+        right: 16px;
+        width: 46px;
+        height: 46px;
+    }
+}
+
+/* ---------- Sidebar de filtros ---------- */
+.dash-sidebar {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: sticky;
+    top: 24px;
+}
+
+.dash-sidebar h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-family: var(--font-display);
+}
+
+.dash-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.dash-filter-group label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+.dash-price-range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dash-price-range input {
+    min-width: 0;
+}
+
+.dash-sidebar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.dash-sidebar-actions .btn-primary {
+    width: 100%;
+    text-align: center;
+}
+
+.dash-sidebar-actions .btn-cancel {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-weight: 500;
+    font-size: 0.92rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* ---------- Contenido principal ---------- */
+.dash-main {
+    min-width: 0;
+}
+
+.dash-search {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.dash-search input {
+    flex: 1;
+}
+
+.dash-search input::placeholder {
+    font-weight: 700;
+}
+
+/*
+    GRID DE PRODUCTOS
+
+    Acomoda las tarjetas de productos en columnas. El grid vive dentro de
+    .dash-main (más angosto por la barra lateral), así que usa 3 columnas
+    en vez de las 4 que tendría a ancho completo.
+*/
+.productos-tienda {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+
+.dash-main .productos-tienda {
+    grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 1180px) {
+    .dash-main .productos-tienda {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 980px) {
+    .productos-tienda {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .productos-tienda,
+    .dash-main .productos-tienda {
+        grid-template-columns: 1fr;
+    }
+}
+
+/*
+    TARJETA DE PRODUCTO
+
+    Cada producto se muestra dentro de una tarjeta oscura, con borde
+    suave, esquinas redondeadas y el mismo estilo neón usado en el resto
+    del proyecto.
+*/
+.producto-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    overflow: hidden;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    transition: transform .25s ease, border-color .25s ease;
+}
+
+.producto-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(0, 240, 255, 0.35);
+}
+
+.producto-img {
+    height: 230px;
+    background: var(--bg-panel-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 22px;
+    border-bottom: 1px solid var(--line);
+}
+
+.producto-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+/*
+    INFORMACIÓN DEL PRODUCTO
+
+    Columna flex que ocupa el resto de la tarjeta, para poder anclar el
+    precio/botón siempre abajo (ver .producto-accion) sin importar el
+    alto de lo demás.
+*/
+.producto-info {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.producto-categoria {
+    display: inline-block;
+    color: var(--cyan);
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+}
+
+.producto-info h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+/*
+    DESCRIPCIÓN DEL PRODUCTO
+
+    Alto fijo (5 líneas, suficiente para el máximo de 255 caracteres que
+    permite la base de datos) para que el botón "Agregar al carrito" quede
+    siempre en la misma posición sin importar si la descripción es corta
+    o larga. Si de verdad no cupiera en 5 líneas, se recorta con "…".
+*/
+.producto-info p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin-bottom: 18px;
+    min-height: 7.75em; /* 5 líneas × line-height 1.55 */
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/*
+    BLOQUE DE PRECIO + ESTADO + BOTÓN
+
+    margin-top:auto lo empuja siempre al fondo de la tarjeta (.producto-info
+    es flex column), así el botón queda alineado entre tarjetas sin importar
+    el alto del resto del contenido.
+*/
+.producto-accion {
+    margin-top: auto;
+}
+
+.producto-precio {
+    display: block;
+    color: var(--cyan);
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+
+.producto-card .btn-primary {
+    width: 100%;
+}
+
+.producto-card .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.producto-info .badge {
+    margin-bottom: 14px;
+}
+
+/*
+    Cantidad de unidades en stock, debajo del precio. En rojo y en negrita
+    cuando queda poco (stock <= stock_minimo del producto), para que se note
+    de inmediato; en gris normal cuando el stock está saludable.
+*/
+.producto-stock {
+    display: block;
+    color: var(--muted);
+    font-size: 0.82rem;
+    margin-bottom: 14px;
+}
+
+.producto-stock-bajo {
+    color: #e74c3c;
+    font-weight: 700;
+}
+
+@media (max-width: 640px) {
+    .producto-img {
+        height: 220px;
+    }
+}

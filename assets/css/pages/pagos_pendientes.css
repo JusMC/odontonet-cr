@@ -1,0 +1,248 @@
+/* pagos_pendientes.css — Estilos exclusivos de pagos_pendientes.php
+   (mismo estilo que inventario.php, usuarios.php, control_citas.php,
+   examenes.php, tratamientos.php y promociones.php).
+
+   Nota: esta página también carga gestionCitas.css (compartido con otras
+   páginas) para los estilos de formulario. Esta página no tiene botón
+   flotante de agregar (FAB): los registros de pagos_pendientes se generan
+   automáticamente desde facturar_servicios.php, no se crean a mano aquí. */
+
+.wrap.dash-wide {
+    max-width: 1500px;
+}
+
+/* ---------- Encabezado ---------- */
+.dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: 48px 0 28px;
+}
+
+.dash-header h1 {
+    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+    line-height: 1.15;
+    font-weight: 700;
+    margin: 8px 0 0;
+}
+
+/* ---------- Indicadores "Total por cobrar" / "Vencido" (sin cambios de diseño) ---------- */
+.stats-pagos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.stat-caja {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 18px 20px;
+}
+
+.stat-caja .label {
+    color: var(--muted);
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 6px;
+}
+
+.stat-caja .valor {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+/* ---------- Layout: sidebar + contenido ---------- */
+.dash-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+@media (max-width: 860px) {
+    .dash-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- Botón secundario "Limpiar filtros" ---------- */
+.btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-weight: 500;
+    font-size: 0.92rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* ---------- Sidebar de filtros ---------- */
+.dash-sidebar {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: sticky;
+    top: 24px;
+}
+
+.dash-sidebar h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-family: var(--font-display);
+}
+
+.dash-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.dash-filter-group label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+.dash-sidebar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.dash-sidebar-actions .btn-primary {
+    width: 100%;
+    text-align: center;
+}
+
+.dash-sidebar-actions .btn-cancel {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* ---------- Contenido principal ---------- */
+.dash-main {
+    min-width: 0;
+}
+
+.dash-search {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.dash-search input {
+    flex: 1;
+}
+
+.dash-search input::placeholder {
+    font-weight: 700;
+}
+
+.dash-results-count {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 14px;
+}
+
+/* ---------- Tabla de pagos pendientes: todo centrado, salvo Paciente ---------- */
+.dash-main table th,
+.dash-main table td {
+    text-align: center;
+}
+
+.dash-main table tbody td:nth-child(2) {
+    text-align: left;
+}
+
+/* ---------- Modal: registrar abono ---------- */
+.dash-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(9, 11, 18, 0.82);
+    backdrop-filter: blur(6px);
+    z-index: 10000;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px;
+    overflow-y: auto;
+}
+
+.dash-modal-overlay.active {
+    display: flex;
+}
+
+.dash-modal-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 24px 26px;
+    width: 100%;
+    max-width: 460px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    animation: dashModalIn 0.2s ease-out;
+}
+
+@keyframes dashModalIn {
+    from { opacity: 0; transform: translateY(-10px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.dash-modal-head {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.dash-modal-close {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 8px;
+}
+
+.dash-modal-close:hover {
+    background: var(--bg-panel-2);
+    color: var(--text);
+}
+
+.dash-req {
+    color: var(--cyan);
+}
+
+.dash-hint {
+    opacity: 0.55;
+    font-weight: 400;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dash-modal-card { animation: none; transition: none; }
+}

@@ -1,0 +1,108 @@
+/* 
+   global.css — Reset básico + estilos base compartidos por TODAS las
+   páginas, más los efectos de fondo (glow / grid) que le dan la
+   identidad visual "neón" al sitio.
+ 
+   Se carga después de variables.css (para poder usar var(--bg), etc.)
+   y antes de los archivos específicos de cada página (home.css,
+   login.css...).
+*/
+ 
+/* ---------- Reset ---------- */
+/* Quita los márgenes/paddings por defecto que trae cada navegador y
+   hace que el ancho/alto declarado en cualquier elemento incluya su
+   padding y borde (box-sizing:border-box), para que los cálculos de
+   tamaño sean más predecibles. */
+
+* {
+    margin:0; 
+    padding:0; 
+    box-sizing:border-box;
+}
+
+html { 
+    scroll-behavior:smooth; /* Anima el salto al hacer clic en enlaces tipo #servicios */
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    overflow-x: hidden; /* Evita scroll horizontal accidental por los "glow" que se salen del viewport */
+    min-height:100vh;
+}
+
+h1,h2,h3 {
+    font-family: var(--font-display);
+    letter-spacing:-0.02em;
+}
+
+a {
+    color: inherit; 
+    text-decoration: none;
+}
+
+button, input{
+  font-family: inherit; /* Sin esto, botones e inputs usan la fuente del sistema en vez de Inter */
+}
+
+.wrap{
+    max-width: 1180px;
+    margin: 0 auto;
+    margin-bottom: 30px;
+    padding: 0 32px;
+}
+
+/* ---------- BACKGROUND FX ---------- */
+/* Los tres "glow" son círculos de color muy desenfocados (blur:120px)
+   colocados en posiciones fijas de la pantalla. Se ven como manchas de
+   luz de color detrás del contenido, dando el ambiente "neón" oscuro. */
+   
+.glow{
+    position:fixed; /* No se mueven con el scroll */
+    border-radius:50%;
+    filter:blur(120px);
+    z-index:0; /* Quedan detrás de todo el contenido real (que usa z-index:1) */
+    pointer-events:none; /* No deben interceptar clics */
+    opacity:0.35;
+}
+    
+.glow-a { width:520px; height:520px; background:var(--cyan); top:-180px; left:-160px; }
+.glow-b { width:600px; height:600px; background:var(--pink); top:20%; right:-220px; opacity:0.22; }
+.glow-c { width:480px; height:480px; background:var(--violet); bottom:-200px; left:30%; opacity:0.25; }
+
+/* Cuadrícula sutil de fondo, hecha con dos gradientes lineales
+   (uno horizontal, uno vertical) repetidos cada 64px. El mask-image
+   la desvanece hacia los bordes para que no se vea como un patrón
+   duro y repetitivo. */
+
+.grid-overlay{
+    position:fixed;
+    inset:0;
+    background-image:
+        linear-gradient(var(--line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:64px 64px;
+    mask-image:radial-gradient(ellipse 60% 50% at 50% 0%, #000 40%, transparent 100%);
+    z-index:0;
+    pointer-events:none;
+}
+
+/* ---------- Página centrada tipo "AUTH" (login, registro) ---------- */
+/* Contenedor que centra vertical y horizontalmente la tarjeta de login
+   o registro en medio de la pantalla. */
+
+.auth-page{
+    position:relative;
+    z-index:1; /* Por encima de los .glow y el grid-overlay */
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px 20px;
+}
+
+/* ---------- Responsive ---------- */
+@media(max-width:640px){
+    .wrap{ padding:0 20px; } /* Menos aire a los lados en pantallas angostas */
+}

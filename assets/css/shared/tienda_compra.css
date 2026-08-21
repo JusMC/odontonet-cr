@@ -1,0 +1,33 @@
+/* tienda_compra.css — Encabezado de dashboard, ancho del contenedor y
+   contador de resultados reutilizados por tienda.php y compra.php. */
+
+/* Esta página usa más ancho que el resto del sitio (.wrap = 1180px): con
+   barra lateral de filtros + tabla (o resumen de compra) necesita más
+   aire para no verse apretada. */
+.wrap.dash-wide {
+    max-width: 1500px;
+}
+
+.dash-header {
+    padding: 44px 0 8px;
+}
+
+.dash-header h1 {
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    line-height: 1.15;
+    font-weight: 700;
+    margin: 8px 0 10px;
+}
+
+.dash-header p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 560px;
+    line-height: 1.55;
+}
+
+.dash-results-count {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 18px;
+}

@@ -1,0 +1,225 @@
+/* facturar_servicios.css — Estilos exclusivos de facturar_servicios.php:
+   formulario pequeño tipo asistente (wizard) de 4 pasos, en vez del
+   formulario largo de una sola pantalla.
+
+   Nota: esta página también carga gestionCitas.css (compartido con otras
+   páginas) para .citas-hero/.citas-card/.grid-dos-columnas/etc. Aquí solo
+   se angosta el contenedor del formulario y se agrega el stepper. */
+
+.wrap.citas-form-wrap {
+    max-width: 560px;
+    padding-top: 20px;
+}
+
+/* ---------- Encabezado (mismo patrón que los dashboards: eyebrow + h1 compacto) ---------- */
+.dash-header {
+    padding: 48px 0 12px;
+}
+
+.dash-header h1 {
+    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+    line-height: 1.15;
+    font-weight: 700;
+    margin: 8px 0 10px;
+}
+
+.dash-header p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 520px;
+    line-height: 1.5;
+}
+
+.citas-card {
+    padding: 30px 32px;
+}
+
+/* ---------- Botón "Atrás" (esta página no define .btn-cancel en ningún otro sitio) ---------- */
+.btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-weight: 500;
+    font-size: 0.92rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* ---------- Barra de progreso (stepper) ---------- */
+.wizard-steps {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 30px;
+}
+
+.wizard-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.wizard-step-circle {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 0.92rem;
+    background: var(--bg-panel-2);
+    border: 2px solid var(--line);
+    color: var(--muted);
+    transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.wizard-step-label {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-align: center;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.wizard-step.active .wizard-step-circle {
+    border-color: var(--cyan);
+    background: var(--grad-1);
+    color: #050608;
+}
+
+.wizard-step.active .wizard-step-label {
+    color: var(--text);
+}
+
+.wizard-step.completed .wizard-step-circle {
+    border-color: #2ecc71;
+    background: rgba(46, 204, 113, 0.15);
+    color: #2ecc71;
+}
+
+.wizard-step.completed .wizard-step-label {
+    color: var(--text);
+}
+
+.wizard-step-line {
+    flex: 1 1 auto;
+    height: 2px;
+    background: var(--line);
+    margin-top: 17px;
+    transition: background 0.25s ease;
+}
+
+.wizard-step-line.completed {
+    background: #2ecc71;
+}
+
+/* ---------- Paneles: solo el paso activo se muestra ---------- */
+.wizard-panel {
+    display: none;
+}
+
+.wizard-panel.active {
+    display: block;
+}
+
+.wizard-panel .citas-section-head {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.wizard-panel .citas-section-head .eyebrow {
+    justify-content: center;
+}
+
+/* ---------- Etiquetas de campo: espacio respecto al control y menor opacidad ---------- */
+.wizard-panel .form-group {
+    margin-bottom: 24px;
+}
+
+.wizard-panel .form-group label {
+    opacity: 0.65;
+}
+
+/* ---------- Navegación Atrás / Siguiente / Generar Factura ---------- */
+.wizard-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 4px;
+}
+
+.wizard-nav .btn-cancel.invisible {
+    visibility: hidden;
+}
+
+/* ---------- Paso 2: checklist de servicios y resumen de la factura ---------- */
+.servicios-checklist {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.servicios-checklist label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: normal;
+}
+
+.servicios-checklist input[type="checkbox"] {
+    width: auto;
+}
+
+.resumen-factura {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+}
+
+.resumen-factura .fila {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 0;
+    color: var(--muted);
+}
+
+.resumen-factura .fila.total {
+    border-top: 1px solid rgba(255,255,255,0.15);
+    margin-top: 8px;
+    padding-top: 10px;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.resumen-factura .fila.descuento span:last-child {
+    color: #2ecc71;
+}
+
+#aviso_paquete {
+    color: #f1c40f;
+    font-size: 0.85rem;
+    margin-top: 8px;
+    display: none;
+}

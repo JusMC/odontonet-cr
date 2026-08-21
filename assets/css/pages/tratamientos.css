@@ -1,0 +1,443 @@
+/* tratamientos.css — Estilos exclusivos de tratamientos.php
+   (mismo estilo que inventario.php, usuarios.php, control_citas.php y
+   examenes.php).
+
+   Nota: esta página también carga gestionCitas.css (compartido con otras
+   páginas) para los estilos de formulario (form-grid, form-group,
+   form-actions, etc.). Ese archivo fuerza el estilo de inputs/selects con
+   !important, así que no hace falta repetir aquí un override de
+   .form-control. */
+
+.wrap.dash-wide {
+    max-width: 1500px;
+}
+
+/* ---------- Encabezado ---------- */
+.dash-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding: 48px 0 28px;
+}
+
+.dash-header h1 {
+    font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+    line-height: 1.15;
+    font-weight: 700;
+    margin: 8px 0 0;
+}
+
+/* ---------- Botón flotante de agregar (círculo verde, "+" en CSS puro) ---------- */
+.dash-fab {
+    flex-shrink: 0;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #2ecc71;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(46, 204, 113, 0.35);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.dash-fab-plus {
+    position: relative;
+    width: 20px;
+    height: 20px;
+}
+
+.dash-fab-plus::before,
+.dash-fab-plus::after {
+    content: "";
+    position: absolute;
+    background: #ffffff;
+    border-radius: 2px;
+}
+
+.dash-fab-plus::before {
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    transform: translateY(-50%);
+}
+
+.dash-fab-plus::after {
+    left: 50%;
+    top: 0;
+    height: 100%;
+    width: 3px;
+    transform: translateX(-50%);
+}
+
+.dash-fab:hover {
+    background: #3ee888;
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 0 26px rgba(46, 204, 113, 0.6);
+}
+
+.dash-fab:active {
+    background: #27b463;
+    transform: translateY(0) scale(0.94);
+    box-shadow: 0 0 12px rgba(46, 204, 113, 0.5);
+}
+
+.dash-fab:focus-visible {
+    outline: 2px solid #2ecc71;
+    outline-offset: 3px;
+}
+
+/* ---------- Layout: sidebar + contenido ---------- */
+.dash-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 32px;
+    align-items: start;
+}
+
+@media (max-width: 860px) {
+    .dash-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- Botón secundario "Cancelar" / "Limpiar filtros" ---------- */
+.btn-cancel {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-weight: 500;
+    font-size: 0.92rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.btn-cancel:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* ---------- Sidebar de filtros ---------- */
+.dash-sidebar {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    position: sticky;
+    top: 24px;
+}
+
+.dash-sidebar h3 {
+    margin: 0;
+    font-size: 1rem;
+    font-family: var(--font-display);
+}
+
+.dash-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.dash-filter-group label {
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-weight: 600;
+}
+
+.dash-price-range {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.dash-price-range input {
+    min-width: 0;
+}
+
+.dash-sidebar-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.dash-sidebar-actions .btn-primary {
+    width: 100%;
+    text-align: center;
+}
+
+.dash-sidebar-actions .btn-cancel {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* ---------- Contenido principal ---------- */
+.dash-main {
+    min-width: 0;
+}
+
+.dash-search {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.dash-search input {
+    flex: 1;
+}
+
+.dash-search input::placeholder {
+    font-weight: 700;
+}
+
+.dash-results-count {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 14px;
+}
+
+/* ---------- Tabla de tratamientos: todo centrado, salvo Tratamiento y Doctores ---------- */
+.dash-main table th,
+.dash-main table td {
+    text-align: center;
+}
+
+.dash-main table tbody td:first-child,
+.dash-main table tbody td:nth-child(5) {
+    text-align: left;
+}
+
+/* Editar / Inactivar-Activar uno al lado del otro, con salto de línea si no caben. */
+.dash-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+}
+
+/* ---------- Modal genérico (registrar / editar tratamiento) ---------- */
+.dash-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(9, 11, 18, 0.82);
+    backdrop-filter: blur(6px);
+    z-index: 10000;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px;
+    overflow-y: auto;
+}
+
+.dash-modal-overlay.active {
+    display: flex;
+}
+
+.dash-modal-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 24px 26px;
+    width: 100%;
+    max-width: 680px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    animation: dashModalIn 0.2s ease-out;
+}
+
+/* Formulario más compacto dentro del modal. */
+.dash-modal-card .form-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.85rem;
+    margin-bottom: 1.1rem;
+}
+
+.dash-modal-card .form-group.col-full {
+    grid-column: 1 / -1;
+}
+
+.dash-modal-card .form-group label {
+    font-size: 0.82rem;
+}
+
+.dash-modal-card .form-actions {
+    margin-top: 0.5rem;
+}
+
+@keyframes dashModalIn {
+    from { opacity: 0; transform: translateY(-10px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.dash-modal-head {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.dash-modal-close {
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 8px;
+}
+
+.dash-modal-close:hover {
+    background: var(--bg-panel-2);
+    color: var(--text);
+}
+
+/* Asterisco de campo obligatorio y aclaraciones */
+.dash-req {
+    color: var(--cyan);
+}
+
+.dash-hint {
+    opacity: 0.55;
+    font-weight: 400;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .dash-modal-card, .dash-fab { animation: none; transition: none; }
+}
+
+/* ---------- Checklist de doctores / productos dentro del modal ---------- */
+.checklist-caja {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+    background: var(--bg-panel-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px;
+}
+
+.checklist-caja label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: normal;
+    font-size: 0.85rem;
+}
+
+.checklist-caja input[type="checkbox"] {
+    width: auto;
+}
+
+.producto-cantidad-fila {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.producto-cantidad-fila span {
+    flex: 1;
+    font-size: 0.85rem;
+}
+
+.producto-cantidad-fila input[type="number"] {
+    width: 70px;
+}
+
+/* ---------- Modal de confirmación de inactivación (mismo patrón que inventario.php / usuarios.php) ---------- */
+.custom-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 14, 23, 0.85);
+    backdrop-filter: blur(6px);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+}
+
+.custom-modal-overlay.active {
+    display: flex;
+}
+
+.custom-modal-card {
+    background: #121826;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 16px;
+    padding: 28px;
+    max-width: 480px;
+    width: 90%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+    text-align: center;
+}
+
+.custom-modal-card h3 {
+    color: #ffffff;
+    font-size: 1.15rem;
+    margin-bottom: 12px;
+}
+
+.custom-modal-card p {
+    color: #94a3b8;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    margin-bottom: 24px;
+}
+
+.custom-modal-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.btn-modal-cancel {
+    background: rgba(255, 255, 255, 0.08);
+    color: #e2e8f0;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.btn-modal-cancel:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.btn-modal-confirm {
+    background: #e11d48;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: inline-block;
+}
+
+.btn-modal-confirm:hover {
+    background: #f43f5e;
+    box-shadow: 0 0 12px rgba(225, 29, 72, 0.4);
+}

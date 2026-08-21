@@ -1,0 +1,25 @@
+/* admin_hero.css — Encabezado compacto (eyebrow + h1 + intro) reutilizado
+   por las pantallas del área de administración: admin.php (panel de
+   control) y permisos.php (matriz de permisos). */
+
+.wrap.admin-wide {
+    max-width: 1300px;
+}
+
+.admin-hero {
+    padding: 44px 0 4px;
+}
+
+.admin-hero h1 {
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    line-height: 1.15;
+    font-weight: 700;
+    margin: 10px 0 8px;
+}
+
+.admin-hero p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    max-width: 560px;
+    line-height: 1.5;
+}

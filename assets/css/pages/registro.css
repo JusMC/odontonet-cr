@@ -1,0 +1,144 @@
+/*
+   registro.css — Estilos EXCLUSIVOS de la vista de registro de pacientes.
+
+   Reutiliza a propósito las mismas clases de login.css (.login-card-glow,
+   .login-card, .login-logo, .login-subtitle, .login-footer) para que
+   ambas tarjetas (login y registro) se vean como parte de la misma
+   familia visual. Aquí solo se agrega lo que es distinto: la tarjeta es
+   más ancha (para caber los campos en pareja) y existe .field-row para
+   poner dos campos lado a lado.
+*/
+
+/* ---------- Borde neón degradado (idéntico al de login.css) ---------- */
+.login-card-glow{
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 460px; /* Un poco más ancha que la de login (420px) para que quepan mejor las filas de 2 columnas */
+    padding: 2px;
+    border-radius: 26px;
+    background: linear-gradient(135deg, var(--cyan), var(--violet), var(--pink));
+    background-size: 200% 200%;
+    animation: border-flow 6s ease infinite;
+    box-shadow: 0 0 40px rgba(0, 240, 255, 0.18), 0 0 70px rgba(255, 46, 146, 0.12);
+}
+
+@keyframes border-flow{
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .login-card-glow{ animation: none; }
+}
+
+/* La tarjeta real: mismo patrón que login.css, con un poco menos de
+   padding lateral porque el contenido (campos en pareja) ya usa el
+   ancho extra que le dimos arriba. */
+.login-card{
+    width: 100%;
+    max-width: none;
+    padding: 40px 34px 34px;
+    border-radius: 24px;
+    position: relative;
+    z-index: 1;
+}
+
+/* ---------- Formulario en columna + botón centrado ----------
+   Mismo fix que login.css: .btn-primary es inline-flex y por eso se
+   pega a la izquierda dentro de un <form> normal; convertimos el form
+   en columna flex y centramos el botón con align-self. */
+.registro-card form{
+    display: flex;
+    flex-direction: column;
+}
+
+.registro-card form .btn-primary{
+    align-self: center;
+    margin-top: 6px;
+}
+
+/* ---------- Fila de dos campos lado a lado ----------
+   Usada para agrupar Apellidos+Edad y Cédula+Teléfono en la misma
+   línea, aprovechando el ancho extra de esta tarjeta. En pantallas
+   angostas (ver media query al final) vuelve a apilarse en 1 columna. */
+.field-row{
+    display: flex;
+    gap: 16px;
+}
+
+.field-row .field{
+    flex: 1; /* Cada campo ocupa la misma proporción del ancho disponible */
+    min-width: 0; /* Evita que un input largo (ej. correo) empuje el layout y rompa el flex */
+}
+
+/* ---------- Logo (idéntico al de login.css) ---------- */
+.login-logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 32px;
+}
+
+.login-logo .logo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-logo .logo-img{
+    height: 64px;   /* Ajusta este valor a tu gusto */
+    width: auto;
+    display: block;
+}
+
+.login-card h1{
+    font-size: 1.5rem;
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+.login-subtitle{
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.88rem;
+    margin-bottom: 24px;
+}
+
+/* ---------- Pie de la tarjeta: "¿Ya tienes cuenta? Iniciar sesión" ---------- */
+.login-footer{
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+}
+
+.login-footer .paragraph{
+    color: var(--muted);
+    font-size: 0.88rem;
+}
+
+/* ---------- Texto "(opcional)" junto a labels no obligatorios ---------- */
+.campo-opcional{
+    color: var(--muted);
+    font-weight: 400;
+    font-size: 0.78rem;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 520px){
+    .login-card{ padding: 30px 22px 26px; }
+
+    /* En pantallas angostas, las parejas de campos (Apellidos+Edad,
+        Cédula+Teléfono) se apilan en una sola columna para que no se
+        achiquen demasiado. */
+    .field-row{
+        flex-direction: column;
+        gap: 0;
+    }
+}

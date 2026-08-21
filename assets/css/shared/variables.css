@@ -1,0 +1,46 @@
+/*
+   variables.css — Fuente única de verdad para colores, tipografías y
+   gradientes de todo el sitio.
+ 
+   Este archivo se carga PRIMERO (antes que global.css y los demás) en
+   cada página, porque define las variables CSS (custom properties) que
+   todo el resto usa vía var(--nombre).
+*/
+
+/* ---------- Fuentes de Google Fonts ---------- */
+
+    /* Inter: fuente para texto de párrafo/cuerpo en general */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+    /* Space Grotesk: fuente para títulos (h1, h2, h3) y el logo */
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap');
+
+    /* JetBrains Mono: fuente monoespaciada para detalles tipo "código" */
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+/* ---------- Variables de estilo ---------- */
+:root{
+
+    /* Fondo: tonos oscuros usados en body, tarjetas y paneles */
+    --bg: #090b12;  /* Fondo general de la página (casi negro) */
+    --bg-panel: #10131d;    /* Fondo de tarjetas (.card, .service-card, etc.) */
+    --bg-panel-2: #141827;  /* Fondo de elementos "dentro" de una tarjeta (inputs, botones sociales) */
+    --line: rgba(231,236,244,0.08); /* Líneas/bordes sutiles, casi invisibles */
+    --text: #e7ecf4;    /* Color de texto principal (casi blanco) */
+    --muted: #8a93a6;   /* Color de texto secundario/apagado (subtítulos, descripciones) */
+
+    /* Acentos neón: los colores "de marca" de OdontoNet */
+    --cyan: #00f0ff;    
+    --pink: #ff2e92;
+    --violet: #7b61ff;
+    --lime: #baff39;
+
+    /* Gradientes (degradados) construidos a partir de los acentos. */
+    --grad-1: linear-gradient(135deg, var(--cyan), var(--violet));
+    --grad-2: linear-gradient(135deg, var(--pink), var(--violet));
+
+    /* Familias de fuentes */
+    --font-body: 'Inter', sans-serif;
+    --font-display: 'Space Grotesk', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+}

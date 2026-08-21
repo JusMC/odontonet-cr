@@ -1,0 +1,446 @@
+/*
+   perfil.css — Estilos exclusivos de perfil.php.
+
+   Encabezado centrado (avatar con iniciales o foto, nombre, fecha de
+   registro, botones) dentro de una tarjeta con borde neón animado (mismo
+   truco que .login-card-glow de login.css, pero sin cargar ese archivo:
+   se duplica aquí en pequeño para mantener este CSS autocontenido). Debajo,
+   secciones de formulario sin cambios respecto al diseño anterior.
+*/
+
+.perfil-shell{
+    padding-top: 40px;
+}
+
+/* Título de la página, centrado, sin eyebrow. */
+.perfil-titulo{
+    font-size: clamp(1.6rem, 2.4vw, 2.1rem);
+    margin: 0 auto 20px;
+    max-width: 980px;
+    text-align: center;
+}
+
+/* ---------- Borde neón degradado (mismo patrón que .login-card-glow) ---------- */
+.perfil-card-glow{
+    position: relative;
+    z-index: 1;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 2px;
+    border-radius: 30px;
+    background: linear-gradient(135deg, var(--cyan), var(--violet), var(--pink));
+    background-size: 200% 200%;
+    animation: perfilBorderFlow 6s ease infinite;
+    box-shadow: 0 0 40px rgba(0, 240, 255, 0.14), 0 0 70px rgba(255, 46, 146, 0.1);
+}
+
+@keyframes perfilBorderFlow{
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@media (prefers-reduced-motion: reduce){
+    .perfil-card-glow{ animation: none; }
+}
+
+.perfil-card{
+    max-width: none; /* el ancho ya lo controla .perfil-card-glow */
+    width: 100%;
+    border-radius: 28px; /* 2px menos que el glow, para que el borde se vea parejo */
+}
+
+/* ---------- Encabezado: avatar + nombre + acciones, todo centrado ---------- */
+.perfil-header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 18px;
+    padding: 40px 32px 32px;
+}
+
+.perfil-identidad{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.perfil-avatar-wrap{
+    position: relative;
+}
+
+.perfil-avatar{
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: var(--bg-panel-2);
+    border: 1px solid var(--line);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--text);
+    box-shadow: 0 10px 26px rgba(0,0,0,0.4);
+    overflow: hidden;
+}
+
+.perfil-avatar img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Botón (ícono de cámara) para cambiar la foto, sobrepuesto en la esquina del avatar. */
+.perfil-avatar-editar{
+    position: absolute;
+    bottom: -2px;
+    right: -2px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--grad-1);
+    color: #050608;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid var(--bg-panel);
+    cursor: pointer;
+    transition: transform .18s ease;
+}
+
+.perfil-avatar-editar:hover{
+    transform: scale(1.08);
+}
+
+.perfil-avatar-input{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+}
+
+.perfil-quitar-foto{
+    display: inline-flex; /* block-level "flex" ignora el text-align:center heredado de
+        .perfil-header; inline-flex sí lo respeta, quedando centrado como el resto del bloque. */
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 8px;
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: var(--muted);
+    font-size: 0.8rem;
+    cursor: pointer;
+}
+
+.perfil-quitar-foto:hover{
+    color: var(--pink);
+}
+
+.perfil-quitar-foto:hover span{
+    text-decoration: underline;
+}
+
+/* ---------- Botón de confirmación destructiva (mismo patrón que usuarios.php) ---------- */
+.btn-modal-confirm{
+    background: #e11d48;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-modal-confirm:hover{
+    background: #f43f5e;
+    box-shadow: 0 0 12px rgba(225, 29, 72, 0.4);
+}
+
+.perfil-meta h2{
+    font-size: 1.5rem;
+    margin: 0 0 6px;
+    line-height: 1.2;
+}
+
+.perfil-desde{
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.perfil-acciones-top{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Botón "Guardar cambios": mismo estilo de .btn-primary (píldora, degradado),
+   pero con paleta verde-turquesa en vez del cyan-violeta del resto del sitio. */
+.perfil-btn-guardar{
+    background: linear-gradient(135deg, #2ecc71, #00e5cc);
+    box-shadow: 0 10px 30px rgba(46, 204, 113, 0.3);
+    color: #012200;
+}
+
+/* ---------- Secciones del formulario ---------- */
+.perfil-seccion{
+    padding: 28px 32px;
+    border-top: 1px solid var(--line);
+}
+
+.perfil-seccion h2{
+    font-size: 1.05rem;
+    margin-bottom: 4px;
+}
+
+.perfil-seccion-hint{
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* ---------- Lista de apps autenticadoras registradas ---------- */
+.perfil-mfa-lista{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 14px 0 16px;
+}
+
+.perfil-mfa-item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 12px 16px;
+    background: var(--bg-panel-2);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+}
+
+/* Ícono de la app junto a su nombre + fecha. align-items:stretch (por
+   defecto en flex) hace que el ícono se estire a la altura real que ocupan
+   esas dos líneas juntas — sin necesidad de fijar un alto a mano. */
+.perfil-mfa-header{
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+}
+
+.perfil-mfa-icono-app{
+    width: auto;
+    max-width: 32px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+
+.perfil-mfa-header-texto{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    min-width: 0;
+}
+
+.perfil-mfa-nombre{
+    font-weight: 600;
+    color: var(--text);
+    font-size: 0.92rem;
+}
+
+.perfil-mfa-fecha{
+    color: var(--muted);
+    font-size: 0.78rem;
+}
+
+.perfil-mfa-item-acciones{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+/* Tamaño compacto compartido por "Renombrar" y "Eliminar" (el .btn-ghost
+   base trae el padding pensado para botones grandes de la parte superior). */
+.perfil-mfa-btn-chico{
+    padding: 8px 16px;
+    font-size: 0.85rem;
+}
+
+/* ---------- Botón "Eliminar" por app (antes el color rojo venía de un
+   style inline, que por especificidad le ganaba siempre a :hover y lo
+   dejaba estático — con una clase propia sí se puede animar). ---------- */
+.perfil-btn-desactivar-mfa{
+    border-color: #e11d48;
+    color: #e11d48;
+    transition: transform .18s ease, border-color .18s ease, color .18s ease, background .18s ease, box-shadow .18s ease;
+}
+
+.perfil-btn-desactivar-mfa:hover{
+    border-color: #f43f5e;
+    color: #f43f5e;
+    background: rgba(225, 29, 72, 0.1);
+    box-shadow: 0 0 12px rgba(225, 29, 72, 0.35);
+    transform: translateY(-2px);
+}
+
+.perfil-grid{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px 24px;
+}
+
+.perfil-grid .field{
+    margin-bottom: 0; /* el gap del grid ya separa los campos */
+}
+
+.perfil-campo-full{
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 640px){
+    .perfil-header{ padding: 32px 20px 28px; }
+    .perfil-avatar{ width: 84px; height: 84px; font-size: 1.6rem; }
+    .perfil-grid{ grid-template-columns: 1fr; }
+    .perfil-seccion{ padding: 24px 20px; }
+    .perfil-acciones-top{ width: 100%; }
+    .perfil-acciones-top .btn-primary{ width: 100%; justify-content: center; }
+}
+
+/* ---------- Modal: ajustar foto de perfil (zoom + recorte circular) ---------- */
+.dash-modal-overlay{
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(9, 11, 18, 0.82);
+    backdrop-filter: blur(6px);
+    z-index: 10000;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 140px 16px 40px;
+    overflow-y: auto;
+}
+
+.dash-modal-overlay.active{
+    display: flex;
+}
+
+.dash-modal-card{
+    background: var(--bg-panel);
+    border: 1px solid var(--line);
+    border-radius: 18px;
+    padding: 24px 26px;
+    width: 100%;
+    max-width: 460px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+    animation: perfilModalIn 0.2s ease-out;
+}
+
+@keyframes perfilModalIn{
+    from { opacity: 0; transform: translateY(-10px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.dash-modal-head{
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.dash-modal-close{
+    position: absolute;
+    top: -4px;
+    right: -6px;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 8px;
+}
+
+.dash-modal-close:hover{
+    background: var(--bg-panel-2);
+    color: var(--text);
+}
+
+.btn-cancel{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-weight: 500;
+    font-size: 0.92rem;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.18s ease, border-color 0.18s ease;
+}
+
+.btn-cancel:hover{
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.recorte-marco{
+    width: 300px;
+    height: 300px;
+    max-width: 100%;
+    margin: 0 auto 20px;
+    border-radius: 50%;
+    overflow: hidden; /* recorta el lienzo cuadrado a un círculo */
+    border: 2px solid var(--cyan);
+    box-shadow: 0 0 24px rgba(0, 240, 255, 0.25);
+    cursor: grab;
+}
+
+.recorte-marco:active{
+    cursor: grabbing;
+}
+
+.recorte-marco canvas{
+    display: block;
+    touch-action: none; /* evita que el navegador haga scroll/zoom de página al arrastrar en móvil */
+}
+
+.recorte-zoom{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 300px;
+    margin: 0 auto 22px;
+    color: var(--muted);
+    font-size: 1.1rem;
+}
+
+.recorte-zoom input[type="range"]{
+    flex: 1;
+    accent-color: var(--cyan);
+}
+
+/* ---------- Campo con error (igual que antes) ---------- */
+.field.field-error input,
+.field.field-error select,
+.field.field-error textarea{
+    border-color: #e74c3c;
+    box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.15);
+}
