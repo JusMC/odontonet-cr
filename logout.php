@@ -2,7 +2,7 @@
 // logout.php — Cierra la sesión activa del usuario y redirige al login.
 
 // 1. Inicializar la sesión para poder acceder a sus datos y destruirla después.
-session_start();
+require_once __DIR__ . '/assets/includes/session_boot.php';
 
 // Registrar el cierre de sesión en la bitácora ANTES de borrar los datos de sesión.
 if (isset($_SESSION['usuario_id'])) {

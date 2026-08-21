@@ -3,10 +3,10 @@
  * auth_check.php — Verificación de sesión activa y estado del usuario en DB.
  *
  * Incluir con require_once al inicio de cualquier página protegida,
- * DESPUÉS de session_start() y ANTES de cualquier output HTML.
+ * DESPUÉS de session_boot.php y ANTES de cualquier output HTML.
  *
  * Uso:
- *   session_start();
+ *   require_once './assets/includes/session_boot.php';
  *   require_once 'assets/includes/auth_check.php';
  *
  * El archivo asume que $pdo ya está disponible (incluir config.php antes).

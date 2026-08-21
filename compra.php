@@ -20,7 +20,7 @@
     8. Redirige a la factura digital (ver_factura.php).
 */
 
-session_start();
+require_once __DIR__ . '/assets/includes/session_boot.php';
 
 require_once './assets/includes/config/config.php';
 require_once './assets/includes/auth_check.php';

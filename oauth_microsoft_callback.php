@@ -1,7 +1,7 @@
 <?php
 // oauth_microsoft_callback.php — Recibe la respuesta de Microsoft y gestiona la sesión.
 
-session_start();
+require_once __DIR__ . '/assets/includes/session_boot.php';
 require_once 'assets/includes/config/config.php';
 require_once 'assets/includes/config/oauth_config.php';
 require_once 'assets/includes/helpers/bitacora_helper.php';

@@ -18,7 +18,7 @@
 -->
 
 <?php
-session_start();
+require_once __DIR__ . '/assets/includes/session_boot.php';
 
 $error = $_SESSION['error_registro'] ?? '';
 $datos = $_SESSION['datos_registro'] ?? [];

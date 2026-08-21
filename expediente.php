@@ -11,7 +11,7 @@
     doctor tenga contexto antes de escribir la nueva entrada.
 */
 
-session_start();
+require_once __DIR__ . '/assets/includes/session_boot.php';
 require_once './assets/includes/config/config.php';
 require_once './assets/includes/auth_check.php';
 require_once './assets/includes/helpers/bitacora_helper.php';

@@ -22,7 +22,7 @@
 
 */
 
-session_start();
+require_once __DIR__ . '/assets/includes/session_boot.php';
 
 require_once './assets/includes/config/config.php'; // Trae $pdo, la conexión a la base de datos
 require_once './assets/includes/helpers/bitacora_helper.php';

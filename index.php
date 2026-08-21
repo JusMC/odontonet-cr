@@ -1,5 +1,5 @@
 <?php
-session_start();
+require_once __DIR__ . '/assets/includes/session_boot.php';
 
 // index.php — Página de presentación pública (landing page) de OdontoNet.
 

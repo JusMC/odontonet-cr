@@ -1,6 +1,6 @@
 <?php
 // mantenimiento.php — Placeholder para módulos en construcción (doctor / recepcionista).
-session_start();
+require_once __DIR__ . '/assets/includes/session_boot.php';
 
 // Guard básico: debe haber sesión activa para llegar aquí.
 if (!isset($_SESSION['usuario_id'])) {

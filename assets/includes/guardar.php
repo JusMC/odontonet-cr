@@ -2,7 +2,7 @@
 
 // guardar.php — Procesa el formulario de registro.php y crea el paciente.
 
-session_start();
+require_once __DIR__ . '/session_boot.php';
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/helpers/bitacora_helper.php';
 

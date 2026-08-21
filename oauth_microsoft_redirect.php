@@ -1,7 +1,7 @@
 <?php
 // oauth_microsoft_redirect.php — Inicia el flujo OAuth con Microsoft.
 
-session_start();
+require_once __DIR__ . '/assets/includes/session_boot.php';
 
 require_once 'assets/includes/config/oauth_config.php';
 

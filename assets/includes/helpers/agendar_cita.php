@@ -1,10 +1,8 @@
 <?php
 
 // Arranca (o retoma) la sesión del navegador, para poder leer $_SESSION.
-session_start();
-
-// Trae la conexión a la base de datos ($pdo).
-require_once __DIR__ . '/../config/config.php';
+// (session_boot.php también deja disponible $pdo, la conexión a la base de datos.)
+require_once __DIR__ . '/../session_boot.php';
 
 // Verifica que haya una sesión válida y que el usuario siga activo.
 require_once __DIR__ . '/../auth_check.php';

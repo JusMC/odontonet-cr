@@ -3,7 +3,7 @@
 
 // Guard: solo el administrador (id_rol = 4) puede acceder.
 // Si no hay sesión activa o el rol no corresponde, se redirige al login.
-session_start();
+require_once __DIR__ . '/assets/includes/session_boot.php';
 
 require_once './assets/includes/auth_check.php';
 

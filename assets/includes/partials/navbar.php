@@ -2,7 +2,7 @@
 /**
  * navbar.php — Navbar adaptativo según rol del usuario.
  *
- * Requiere que session_start() ya haya sido llamado antes de incluir este archivo.
+ * Requiere que session_boot.php ya haya sido incluido antes de incluir este archivo.
  * Lee $_SESSION['id_rol'] para mostrar los links correspondientes.
  *
  * Roles:

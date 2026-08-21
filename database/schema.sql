@@ -580,6 +580,22 @@ CREATE TABLE `servicio_productos` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `sesiones`
+--
+-- Almacenamiento de las sesiones de PHP (ver assets/includes/db_session_handler.php).
+-- Necesaria en un entorno serverless (ej. Vercel), donde no se puede confiar en
+-- que los archivos de sesión del disco local persistan entre solicitudes.
+--
+
+CREATE TABLE `sesiones` (
+  `id` varchar(128) NOT NULL,
+  `datos` mediumtext,
+  `expira_en` int UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `usuarios`
 --
 
@@ -834,6 +850,13 @@ ALTER TABLE `servicios`
 ALTER TABLE `servicio_productos`
   ADD PRIMARY KEY (`id_servicio`,`id_producto`),
   ADD KEY `fk_servprod_producto` (`id_producto`);
+
+--
+-- Indices de la tabla `sesiones`
+--
+ALTER TABLE `sesiones`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_sesiones_expira` (`expira_en`);
 
 --
 -- Indices de la tabla `usuarios`

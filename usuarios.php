@@ -9,7 +9,7 @@
     edición en un modal.
 */
 
-session_start();
+require_once __DIR__ . '/assets/includes/session_boot.php';
 
 // Guard de rol: solo el administrador (id_rol = 4) puede acceder a esta página.
 if (!isset($_SESSION['id_rol']) || (int) $_SESSION['id_rol'] !== 4) {

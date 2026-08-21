@@ -10,7 +10,7 @@
  * no se pueden abrir directamente sin haber pasado por aquí primero.
  */
 
-session_start();
+require_once __DIR__ . '/assets/includes/session_boot.php';
 require_once './assets/includes/config/config.php';
 require_once './assets/includes/helpers/bitacora_helper.php';
 require_once './assets/includes/config/mail_config.php';

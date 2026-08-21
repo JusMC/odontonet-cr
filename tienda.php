@@ -18,7 +18,7 @@
       compra.php al confirmar el pago).
 */
 
-session_start();
+require_once __DIR__ . '/assets/includes/session_boot.php';
 
 require_once 'assets/includes/config/config.php';
 require_once 'assets/includes/auth_check.php';
