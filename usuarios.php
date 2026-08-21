@@ -57,10 +57,36 @@ if (isset($_GET['accion']) && $_GET['accion'] === 'activar' && isset($_GET['id']
     }
 }
 
+// RESTABLECER MFA (admin): borra los métodos de app autenticadora y los
+// códigos de respaldo del usuario. Es la salida cuando alguien perdió el
+// acceso a su app autenticadora Y a sus códigos de respaldo (si todavía
+// tiene un código de respaldo, puede resolverlo él mismo desde su perfil,
+// sin necesitar al administrador). Vuelve a poder iniciar sesión solo con
+// contraseña/OAuth; puede volver a activar la verificación en dos pasos
+// cuando quiera desde su perfil.
+if (isset($_GET['accion']) && $_GET['accion'] === 'mfa_restablecer' && isset($_GET['id'])) {
+    $id_mfa_reset = intval($_GET['id']);
+    try {
+        $pdo->beginTransaction();
+        $pdo->prepare("DELETE FROM mfa_totp WHERE id_usuario = :id")->execute([':id' => $id_mfa_reset]);
+        $pdo->prepare("DELETE FROM mfa_codigos_respaldo WHERE id_usuario = :id")->execute([':id' => $id_mfa_reset]);
+        $pdo->commit();
+        registrar_bitacora($pdo, 'UPDATE', "Se restableció (desactivó) la verificación en dos pasos del usuario #$id_mfa_reset.");
+        header("Location: usuarios.php?msg=mfa_restablecido");
+        exit;
+    } catch (\PDOException $e) {
+        $pdo->rollBack();
+        registrar_bitacora($pdo, 'ERROR', "Falló restablecer la verificación en dos pasos del usuario #$id_mfa_reset: " . $e->getMessage());
+        $mensaje = "Error al restablecer la verificación en dos pasos: " . $e->getMessage();
+        $tipo_mensaje = "error";
+    }
+}
+
 if (isset($_GET['msg'])) {
     $mensajes_ok = [
         'inactivado' => 'Usuario inactivado. Sus datos se conservan en el sistema.',
         'activado'   => 'Usuario reactivado con éxito.',
+        'mfa_restablecido' => 'Verificación en dos pasos restablecida: el usuario podrá iniciar sesión solo con su contraseña.',
     ];
     if (isset($mensajes_ok[$_GET['msg']])) {
         $mensaje = $mensajes_ok[$_GET['msg']];
@@ -415,7 +441,8 @@ $limite_int = (int) $limite;
 // CONSULTAR USUARIOS
 $sql_usuarios = "SELECT u.id_usuario, u.nombre, u.apellido, u.correo, u.telefono, u.estado, u.id_rol,
                         r.nombre AS rol_nombre,
-                        u.cedula
+                        u.cedula,
+                        EXISTS(SELECT 1 FROM mfa_totp m WHERE m.id_usuario = u.id_usuario AND m.confirmado = 1) AS tiene_mfa
                  FROM usuarios u
                  INNER JOIN roles r ON u.id_rol = r.id_rol"
                  . $where_usuarios .
@@ -579,6 +606,12 @@ $lista_usuarios = $stmt_usuarios->fetchAll();
                                         </td>
                                         <td>
                                             <a href="usuarios.php?accion=editar&id=<?= $u['id_usuario'] ?>" class="btn-action btn-edit">Editar</a>
+                                            <?php if ((int) $u['tiene_mfa'] === 1): ?>
+                                                <a href="#" class="btn-action btn-edit"
+                                                   onclick="confirmarRestablecerMfa('usuarios.php?accion=mfa_restablecer&id=<?= $u['id_usuario'] ?>', '<?= htmlspecialchars(addslashes($u['nombre'] . ' ' . $u['apellido'])) ?>'); return false;">
+                                                    Restablecer MFA
+                                                </a>
+                                            <?php endif; ?>
                                             <?php if ((int) $u['estado'] === 1): ?>
                                                 <a href="#" class="btn-action btn-delete"
                                                    onclick="confirmarInactivacion('usuarios.php?accion=inactivar&id=<?= $u['id_usuario'] ?>', '<?= htmlspecialchars(addslashes($u['nombre'] . ' ' . $u['apellido'])) ?>'); return false;">
@@ -772,7 +805,7 @@ $lista_usuarios = $stmt_usuarios->fetchAll();
     <!-- MODAL: CONFIRMAR INACTIVACIÓN -->
     <div id="modalConfirmacion" class="custom-modal-overlay">
         <div class="custom-modal-card">
-            <h3>¿Inactivar usuario?</h3>
+            <h3 id="modalTituloConfirmacion">¿Inactivar usuario?</h3>
             <p id="modalMensajeTexto">¿Estás seguro de que deseas inactivar este usuario? Podrás reactivarlo después.</p>
             <div class="custom-modal-actions">
                 <button type="button" class="btn-modal-cancel" onclick="cerrarModal()">Cancelar</button>
@@ -840,12 +873,24 @@ $lista_usuarios = $stmt_usuarios->fetchAll();
             if (e.target === this) cerrarModalUsuario();
         });
 
-        // MODAL DE CONFIRMACIÓN DE INACTIVACIÓN
-        // Rellena el texto del modal con el nombre del usuario y prepara el link de confirmación.
+        // MODAL DE CONFIRMACIÓN (compartido entre "Inactivar" y "Restablecer MFA").
+        // Cada función rellena título, mensaje y link antes de abrirlo, así el
+        // mismo modal sirve para ambas acciones sin arrastrar texto de la otra.
         function confirmarInactivacion(url, nombre) {
-            var mensaje = '¿Deseas inactivar al usuario "' + nombre + '"? Podrás reactivarlo en cualquier momento.';
-            document.getElementById('modalMensajeTexto').innerText = mensaje;
-            document.getElementById('btnConfirmarModal').href = url;
+            document.getElementById('modalTituloConfirmacion').innerText = '¿Inactivar usuario?';
+            document.getElementById('modalMensajeTexto').innerText = '¿Deseas inactivar al usuario "' + nombre + '"? Podrás reactivarlo en cualquier momento.';
+            var boton = document.getElementById('btnConfirmarModal');
+            boton.href = url;
+            boton.innerText = 'Inactivar';
+            document.getElementById('modalConfirmacion').classList.add('active');
+        }
+
+        function confirmarRestablecerMfa(url, nombre) {
+            document.getElementById('modalTituloConfirmacion').innerText = '¿Restablecer verificación en dos pasos?';
+            document.getElementById('modalMensajeTexto').innerText = '¿Deseas restablecer la verificación en dos pasos de "' + nombre + '"? Se eliminarán sus apps autenticadoras y códigos de respaldo; podrá volver a iniciar sesión solo con su contraseña, y activar MFA de nuevo cuando quiera desde su perfil.';
+            var boton = document.getElementById('btnConfirmarModal');
+            boton.href = url;
+            boton.innerText = 'Restablecer MFA';
             document.getElementById('modalConfirmacion').classList.add('active');
         }
 
