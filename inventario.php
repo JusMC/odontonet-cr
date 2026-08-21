@@ -13,6 +13,7 @@ require_once './assets/includes/config/config.php';
 require_once './assets/includes/auth_check.php';
 require_once './assets/includes/helpers/bitacora_helper.php';
 require_once './assets/includes/helpers/paginacion_helper.php';
+require_once './assets/includes/helpers/archivo_helper.php';
 
 // Guard: solo recepcionista (id_rol = 3) o administrador (id_rol = 4) pueden acceder.
 if (!isset($_SESSION['usuario_id'])) {
@@ -222,15 +223,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_producto'])) 
             // imagen en disco (si se subió una) con un nombre único.
             $ruta_imagen_nueva = null;
             if ($imagen_subida_valida) {
-                $carpeta_imagenes = __DIR__ . '/assets/images/productos/';
-                if (!is_dir($carpeta_imagenes)) {
-                    mkdir($carpeta_imagenes, 0755, true);
-                }
-
                 $nombre_archivo_imagen = 'producto_' . uniqid() . '.' . $extension_imagen;
-                if (move_uploaded_file($_FILES['imagen']['tmp_name'], $carpeta_imagenes . $nombre_archivo_imagen)) {
-                    $ruta_imagen_nueva = 'assets/images/productos/' . $nombre_archivo_imagen;
-                } else {
+                $ruta_imagen_nueva = guardar_archivo_subido($_FILES['imagen']['tmp_name'], 'assets/images/productos', $nombre_archivo_imagen, $info_imagen['mime']);
+                if ($ruta_imagen_nueva === null) {
                     throw new RuntimeException('No se pudo guardar la imagen en el servidor.');
                 }
             }
@@ -260,9 +255,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_producto'])) 
                     $stmt_imagen_anterior = $pdo->prepare("SELECT imagen FROM productos WHERE id_producto = :id");
                     $stmt_imagen_anterior->execute([':id' => $id_producto]);
                     $imagen_anterior = $stmt_imagen_anterior->fetchColumn();
-                    if (!empty($imagen_anterior) && is_file(__DIR__ . '/' . $imagen_anterior)) {
-                        @unlink(__DIR__ . '/' . $imagen_anterior);
-                    }
+                    eliminar_archivo_guardado($imagen_anterior ?: null);
                 }
                 $stmt->execute($params_producto);
 

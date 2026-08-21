@@ -18,6 +18,7 @@
 require_once __DIR__ . '/assets/includes/session_boot.php';
 require_once './assets/includes/config/config.php';
 require_once './assets/includes/auth_check.php';
+require_once './assets/includes/helpers/archivo_helper.php';
 
 if (!isset($_SESSION['usuario_id'])) {
     header('Location: login.php');
@@ -62,19 +63,33 @@ if (!$autorizado) {
     die('No tienes permiso para ver este archivo.');
 }
 
-// El campo `archivo` siempre se genera como 'storage/examenes/<archivo>' (ver examenes.php).
-$ruta_relativa = $examen['archivo'];
-$ruta_absoluta = realpath(__DIR__ . '/' . $ruta_relativa);
-$carpeta_permitida = realpath(__DIR__ . '/storage/examenes');
+// El campo `archivo` es, según dónde se subió, una URL de Vercel Blob Storage
+// o (en desarrollo local) una ruta relativa 'storage/examenes/<archivo>'
+// (ver examenes.php / archivo_helper.php).
+$valor_guardado = $examen['archivo'];
+$es_url_remota = str_starts_with($valor_guardado, 'http://') || str_starts_with($valor_guardado, 'https://');
 
-// Confirmamos que la ruta resuelta siga dentro de storage/examenes (evita path traversal).
-if ($ruta_absoluta === false || $carpeta_permitida === false || !str_starts_with($ruta_absoluta, $carpeta_permitida)) {
+if (!$es_url_remota) {
+    // Confirmamos que la ruta resuelta siga dentro de storage/examenes (evita path traversal).
+    $ruta_absoluta = realpath(__DIR__ . '/' . $valor_guardado);
+    $carpeta_permitida = realpath(__DIR__ . '/storage/examenes');
+    if ($ruta_absoluta === false || $carpeta_permitida === false || !str_starts_with($ruta_absoluta, $carpeta_permitida)) {
+        http_response_code(404);
+        die('Archivo no encontrado.');
+    }
+}
+
+// Nunca se redirige a la URL real de Blob ni se expone al cliente: este script
+// la descarga por su cuenta (server-side) y retransmite los bytes, así el
+// control de acceso por rol de arriba sigue aplicando a cada solicitud.
+$contenido = leer_archivo_guardado($valor_guardado);
+if ($contenido === null) {
     http_response_code(404);
     die('Archivo no encontrado.');
 }
 
 // Según la extensión del archivo, le decimos al navegador qué tipo de contenido es.
-$extension = strtolower(pathinfo($ruta_absoluta, PATHINFO_EXTENSION));
+$extension = strtolower(pathinfo(parse_url($valor_guardado, PHP_URL_PATH) ?: $valor_guardado, PATHINFO_EXTENSION));
 $tipos_mime = [
     'jpg'  => 'image/jpeg',
     'jpeg' => 'image/jpeg',
@@ -84,10 +99,10 @@ $tipos_mime = [
 $mime = $tipos_mime[$extension] ?? 'application/octet-stream';
 
 header('Content-Type: ' . $mime);
-header('Content-Length: ' . filesize($ruta_absoluta));
-header('Content-Disposition: inline; filename="' . basename($ruta_absoluta) . '"'); // "inline" = se muestra en el navegador, no se descarga directo.
+header('Content-Length: ' . strlen($contenido));
+header('Content-Disposition: inline; filename="' . basename($valor_guardado) . '"'); // "inline" = se muestra en el navegador, no se descarga directo.
 header('X-Content-Type-Options: nosniff'); // Evita que el navegador intente "adivinar" otro tipo de archivo.
 header('Cache-Control: private, no-store'); // No se debe guardar en caché, es un archivo médico privado.
 
-readfile($ruta_absoluta); // Enviamos el contenido real del archivo al navegador.
+echo $contenido; // Enviamos el contenido real del archivo al navegador.
 exit;

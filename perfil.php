@@ -4,6 +4,7 @@ require_once __DIR__ . '/assets/includes/session_boot.php';
 require_once './assets/includes/config/config.php';
 require_once './assets/includes/auth_check.php';
 require_once './assets/includes/helpers/bitacora_helper.php';
+require_once './assets/includes/helpers/archivo_helper.php';
 require_once './assets/includes/config/mfa_config.php';
 require_once './assets/includes/helpers/mfa_helper.php';
 
@@ -207,26 +208,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $accion === 'guardar_perfil') {
                 $foto_valor_nuevo = null;
 
                 if ($foto_subida_valida) {
-                    $carpeta_fotos = __DIR__ . '/assets/images/perfiles/';
-                    if (!is_dir($carpeta_fotos)) {
-                        mkdir($carpeta_fotos, 0755, true);
-                    }
-
                     $nombre_archivo_foto = 'perfil_' . uniqid() . '.' . $extension_foto;
-                    if (move_uploaded_file($_FILES['foto_perfil']['tmp_name'], $carpeta_fotos . $nombre_archivo_foto)) {
-                        $foto_valor_nuevo = 'assets/images/perfiles/' . $nombre_archivo_foto;
-                        $debe_actualizar_foto = true;
-                    } else {
+                    $foto_valor_nuevo = guardar_archivo_subido($_FILES['foto_perfil']['tmp_name'], 'assets/images/perfiles', $nombre_archivo_foto, $info_foto['mime']);
+                    if ($foto_valor_nuevo === null) {
                         throw new Exception('No se pudo guardar la foto de perfil en el servidor.');
                     }
+                    $debe_actualizar_foto = true;
                 } elseif ($quitar_foto && !empty($foto_actual)) {
                     $foto_valor_nuevo = null;
                     $debe_actualizar_foto = true;
                 }
 
-                if ($debe_actualizar_foto && !empty($foto_actual) && is_file(__DIR__ . '/' . $foto_actual)) {
-                    // Se reemplaza o se quita: la foto anterior deja de usarse, se borra del disco.
-                    @unlink(__DIR__ . '/' . $foto_actual);
+                if ($debe_actualizar_foto && !empty($foto_actual)) {
+                    // Se reemplaza o se quita: la foto anterior deja de usarse, se borra.
+                    eliminar_archivo_guardado($foto_actual);
                 }
 
                 // Construir la query de forma dinámica: solo se incluyen

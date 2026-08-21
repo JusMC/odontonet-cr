@@ -14,6 +14,7 @@ require_once './assets/includes/config/config.php';
 require_once './assets/includes/auth_check.php';
 require_once './assets/includes/helpers/bitacora_helper.php';
 require_once './assets/includes/helpers/paginacion_helper.php';
+require_once './assets/includes/helpers/archivo_helper.php';
 
 // Guard: solo doctor (id_rol = 2) o administrador (id_rol = 4).
 $id_rol = (int) ($_SESSION['id_rol'] ?? 0);
@@ -156,6 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registrar_resultado']
                     $archivo_error = "El archivo no es una imagen JPG/PNG válida.";
                 } else {
                     $archivo_subida_valida = true;
+                    $mime_archivo = $info_imagen['mime'];
                 }
             } else {
                 // PDF: confirmamos que los primeros bytes del archivo sean "%PDF" (su firma real), no solo la extensión.
@@ -168,6 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registrar_resultado']
                     $archivo_error = "El archivo no es un PDF válido.";
                 } else {
                     $archivo_subida_valida = true;
+                    $mime_archivo = 'application/pdf';
                 }
             }
         }
@@ -185,21 +188,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registrar_resultado']
         try {
             $ruta_archivo_nueva = null;
             if ($archivo_subida_valida) {
-                $carpeta_archivos = __DIR__ . '/storage/examenes/';
-                if (!is_dir($carpeta_archivos)) {
-                    mkdir($carpeta_archivos, 0755, true);
-                }
                 // Nombre único para el archivo, para que dos exámenes distintos nunca se pisen entre sí.
                 $nombre_archivo = 'examen_' . uniqid() . '.' . $extension_archivo;
-                if (move_uploaded_file($_FILES['archivo']['tmp_name'], $carpeta_archivos . $nombre_archivo)) {
-                    $ruta_archivo_nueva = 'storage/examenes/' . $nombre_archivo;
-
-                    // Si había un archivo anterior, lo borramos para no acumular huérfanos.
-                    if (!empty($examen_actual['archivo']) && is_file(__DIR__ . '/' . $examen_actual['archivo'])) {
-                        @unlink(__DIR__ . '/' . $examen_actual['archivo']);
-                    }
-                } else {
+                $ruta_archivo_nueva = guardar_archivo_subido($_FILES['archivo']['tmp_name'], 'storage/examenes', $nombre_archivo, $mime_archivo);
+                if ($ruta_archivo_nueva === null) {
                     throw new RuntimeException('No se pudo guardar el archivo en el servidor.');
+                }
+
+                // Si había un archivo anterior, lo borramos para no acumular huérfanos.
+                if (!empty($examen_actual['archivo'])) {
+                    eliminar_archivo_guardado($examen_actual['archivo']);
                 }
             }
 
