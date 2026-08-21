@@ -756,12 +756,12 @@ $lista_productos = $stmt_productos->fetchAll();
 
                     <div class="form-group col-full">
                         <label for="fecha_caducidad">Fecha de Caducidad <span class="dash-hint">(máx. 100 años a futuro)</span></label>
-                        <input type="date" id="fecha_caducidad" name="fecha_caducidad" min="<?= date('Y-m-d') ?>" max="<?= date('Y-m-d', strtotime('+100 years')) ?>" value="<?= htmlspecialchars($producto_edit['fecha_caducidad']) ?>" class="form-control">
+                        <input type="date" id="fecha_caducidad" name="fecha_caducidad" min="<?= date('Y-m-d') ?>" max="<?= date('Y-m-d', strtotime('+100 years')) ?>" value="<?= htmlspecialchars($producto_edit['fecha_caducidad'] ?? '') ?>" class="form-control">
                     </div>
 
                     <div class="form-group col-full">
                         <label for="descripcion">Descripción / Detalle <span class="dash-hint">(máx. 100 caracteres)</span></label>
-                        <input type="text" id="descripcion" name="descripcion" maxlength="100" value="<?= htmlspecialchars($producto_edit['descripcion']) ?>" placeholder="Especificaciones de uso, marca o proveedor..." class="form-control">
+                        <input type="text" id="descripcion" name="descripcion" maxlength="100" value="<?= htmlspecialchars($producto_edit['descripcion'] ?? '') ?>" placeholder="Especificaciones de uso, marca o proveedor..." class="form-control">
                     </div>
 
                     <div class="form-group col-full">

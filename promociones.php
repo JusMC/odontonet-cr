@@ -529,11 +529,11 @@ $abrir_modal_formulario = $modo_edicion || ($tipo_mensaje === 'error' && isset($
 
                     <div id="campo_precio_paquete" class="campo-condicional form-group">
                         <label for="precio_paquete"><span class="dash-req">*</span> Precio combinado <span class="dash-hint">(₡)</span></label>
-                        <input type="number" step="0.01" min="0" id="precio_paquete" name="precio_paquete" value="<?= htmlspecialchars($promo_edit['precio_paquete']) ?>" class="form-control">
+                        <input type="number" step="0.01" min="0" id="precio_paquete" name="precio_paquete" value="<?= htmlspecialchars($promo_edit['precio_paquete'] ?? '') ?>" class="form-control">
                     </div>
                     <div id="campo_valor_descuento" class="campo-condicional form-group">
                         <label for="valor_descuento" id="label_valor_descuento"><span class="dash-req">*</span> Valor del descuento</label>
-                        <input type="number" step="0.01" min="0" id="valor_descuento" name="valor_descuento" value="<?= htmlspecialchars($promo_edit['valor_descuento']) ?>" class="form-control">
+                        <input type="number" step="0.01" min="0" id="valor_descuento" name="valor_descuento" value="<?= htmlspecialchars($promo_edit['valor_descuento'] ?? '') ?>" class="form-control">
                     </div>
 
                     <div class="form-group">
@@ -543,12 +543,12 @@ $abrir_modal_formulario = $modo_edicion || ($tipo_mensaje === 'error' && isset($
 
                     <div class="form-group">
                         <label for="fecha_fin">Fecha de fin <span class="dash-hint">(opcional — sin límite si se deja vacío)</span></label>
-                        <input type="date" id="fecha_fin" name="fecha_fin" value="<?= htmlspecialchars($promo_edit['fecha_fin']) ?>" class="form-control">
+                        <input type="date" id="fecha_fin" name="fecha_fin" value="<?= htmlspecialchars($promo_edit['fecha_fin'] ?? '') ?>" class="form-control">
                     </div>
 
                     <div class="form-group col-full">
                         <label for="descripcion">Descripción <span class="dash-hint">(opcional)</span></label>
-                        <textarea id="descripcion" name="descripcion" rows="1" placeholder="Ej: Válida para tratamientos familiares durante diciembre." class="form-control"><?= htmlspecialchars($promo_edit['descripcion']) ?></textarea>
+                        <textarea id="descripcion" name="descripcion" rows="1" placeholder="Ej: Válida para tratamientos familiares durante diciembre." class="form-control"><?= htmlspecialchars($promo_edit['descripcion'] ?? '') ?></textarea>
                     </div>
 
                     <div class="form-group col-full">
