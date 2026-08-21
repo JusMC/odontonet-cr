@@ -41,13 +41,11 @@ function stripe_api_call(string $endpoint, array $params = [], string $method = 
     // Si curl_exec devuelve false, es que ni siquiera se pudo conectar con Stripe.
     if ($respuesta === false) {
         $error_curl = curl_error($ch);
-        curl_close($ch);
         throw new RuntimeException('Error de conexión con Stripe: ' . $error_curl);
     }
 
-    // Guardamos el código de estado HTTP (200 = éxito, 400+ = error) antes de cerrar la conexión.
+    // Guardamos el código de estado HTTP (200 = éxito, 400+ = error).
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-    curl_close($ch);
 
     // Convertimos la respuesta (que viene en formato JSON) a un array de PHP normal.
     $data = json_decode($respuesta, true);

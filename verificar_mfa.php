@@ -20,6 +20,19 @@ define('MFA_VENTANA_MINUTOS', 15);
 
 // Sin un login pendiente de verificar (contraseña/OAuth ya validados), no hay nada que hacer aquí.
 if (!isset($_SESSION['mfa_pendiente_usuario_id'])) {
+    // Si ya hay una sesión completa (por ejemplo, un envío duplicado del
+    // formulario que llega después de que el primero ya verificó el código
+    // y cerró el trámite pendiente), lo mandamos a su panel en vez de login,
+    // para no expulsar a alguien que en realidad ya inició sesión.
+    if (isset($_SESSION['usuario_id'])) {
+        $destino_ya_logueado = match ((int) ($_SESSION['id_rol'] ?? 0)) {
+            4 => 'admin.php',
+            2, 3 => 'control_citas.php',
+            default => 'inicio.php',
+        };
+        header('Location: ' . $destino_ya_logueado);
+        exit;
+    }
     header('Location: login.php');
     exit;
 }
@@ -206,8 +219,10 @@ $digitos_previos = str_split(preg_replace('/[^0-9]/', '', $_POST['codigo'] ?? ''
                 function actualizarCampoOculto() {
                     campoOculto.value = cajas.map(function (c) { return c.value; }).join('');
                 }
+                let yaEnviado = false; // Evita que el mismo código se envíe dos veces (ej: autocompletado del sistema operativo disparando varios eventos).
                 function enviarSiCompleto() {
-                    if (cajas.every(function (c) { return c.value !== ''; })) {
+                    if (!yaEnviado && cajas.every(function (c) { return c.value !== ''; })) {
+                        yaEnviado = true;
                         actualizarCampoOculto();
                         form.requestSubmit();
                     }

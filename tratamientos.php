@@ -535,7 +535,7 @@ $abrir_modal_formulario = $modo_edicion || ($tipo_mensaje === 'error' && isset($
 
                     <div class="form-group">
                         <label for="descripcion">Descripción <span class="dash-hint">(opcional)</span></label>
-                        <textarea id="descripcion" name="descripcion" rows="1" placeholder="Detalle del procedimiento..." class="form-control"><?= htmlspecialchars($trat_edit['descripcion']) ?></textarea>
+                        <textarea id="descripcion" name="descripcion" rows="1" placeholder="Detalle del procedimiento..." class="form-control"><?= htmlspecialchars($trat_edit['descripcion'] ?? '') ?></textarea>
                     </div>
 
                     <div class="form-group col-full">
