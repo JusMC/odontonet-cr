@@ -27,14 +27,16 @@ function guardar_archivo_subido(string $ruta_tmp, string $carpeta_relativa, stri
         }
 
         $destino = $carpeta_relativa . '/' . $nombre_archivo;
-        $ch = curl_init('https://blob.vercel-storage.com/' . $destino);
+        $url = 'https://vercel.com/api/blob/?' . http_build_query(['pathname' => $destino]);
+        $ch = curl_init($url);
         curl_setopt_array($ch, [
             CURLOPT_CUSTOMREQUEST  => 'PUT',
             CURLOPT_POSTFIELDS     => $contenido,
             CURLOPT_HTTPHEADER     => [
                 'Authorization: Bearer ' . $token,
-                'x-api-version: 7',
+                'x-api-version: 12',
                 'x-content-type: ' . $mime,
+                'x-vercel-blob-access: public',
                 'x-add-random-suffix: 0',
             ],
             CURLOPT_RETURNTRANSFER => true,
@@ -76,13 +78,13 @@ function eliminar_archivo_guardado(?string $valor_guardado): void {
             return;
         }
 
-        $ch = curl_init('https://blob.vercel-storage.com/delete');
+        $ch = curl_init('https://vercel.com/api/blob/delete');
         curl_setopt_array($ch, [
             CURLOPT_CUSTOMREQUEST  => 'POST',
             CURLOPT_POSTFIELDS     => json_encode(['urls' => [$valor_guardado]]),
             CURLOPT_HTTPHEADER     => [
                 'Authorization: Bearer ' . $token,
-                'x-api-version: 7',
+                'x-api-version: 12',
                 'Content-Type: application/json',
             ],
             CURLOPT_RETURNTRANSFER => true,
