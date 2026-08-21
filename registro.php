@@ -1,22 +1,3 @@
-<!DOCTYPE html>
-
-<!--
-     registro.php — Alta de nuevos pacientes.
- 
-     Esta vista solo dibuja el formulario; la lógica de guardado vive en
-     assets/includes/guardar.php. Con el modelo usuarios+pacientes, un registro exitoso crea DOS filas relacionadas:
- 
-       1) Una fila en `usuarios`  -> nombre, apellido, correo, contraseña,
-          teléfono, con id_rol = "paciente".
-       2) Una fila en `pacientes` -> cédula, fecha de nacimiento y
-          dirección, enlazada a la anterior mediante id_usuario.
- 
-     A diferencia de login.php, este formulario se envía a otro archivo
-     (no a sí mismo) porque no necesita mostrar errores de validación en
-     esta misma página todavía; guardar.php redirige de vuelta a
-     login.php cuando termina.
--->
-
 <?php
 require_once __DIR__ . '/assets/includes/session_boot.php';
 
@@ -26,6 +7,24 @@ $datos = $_SESSION['datos_registro'] ?? [];
 // Se muestran una sola vez: al leerlos, se limpian de la sesión.
 unset($_SESSION['error_registro'], $_SESSION['datos_registro']);
 ?>
+<!DOCTYPE html>
+
+<!--
+     registro.php — Alta de nuevos pacientes.
+
+     Esta vista solo dibuja el formulario; la lógica de guardado vive en
+     assets/includes/guardar.php. Con el modelo usuarios+pacientes, un registro exitoso crea DOS filas relacionadas:
+
+       1) Una fila en `usuarios`  -> nombre, apellido, correo, contraseña,
+          teléfono, con id_rol = "paciente".
+       2) Una fila en `pacientes` -> cédula, fecha de nacimiento y
+          dirección, enlazada a la anterior mediante id_usuario.
+
+     A diferencia de login.php, este formulario se envía a otro archivo
+     (no a sí mismo) porque no necesita mostrar errores de validación en
+     esta misma página todavía; guardar.php redirige de vuelta a
+     login.php cuando termina.
+-->
 
 <html lang="es">
 
