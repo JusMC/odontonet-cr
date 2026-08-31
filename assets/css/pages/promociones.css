@@ -313,6 +313,12 @@
     .dash-modal-card, .dash-fab { animation: none; transition: none; }
 }
 
+@media (max-width: 560px) {
+    .dash-modal-card .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* ---------- Campos condicionales según el tipo de promoción ---------- */
 .campo-condicional {
     display: none;

@@ -64,6 +64,13 @@ $dropdown_activo = function (array $archivos) use ($_pagina_actual): bool {
             <img src="assets/images/logos/logo-navbar.svg" alt="OdontoNet" class="logo-img">
         </a>
 
+        <button type="button" class="burger" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav-menu">
+            <span class="burger-bar"></span>
+            <span class="burger-bar"></span>
+            <span class="burger-bar"></span>
+        </button>
+
+        <div class="nav-menu" id="nav-menu">
         <div class="nav-links">
             <?php if (!$_logueado): ?>
                 <!-- Visitante público -->
@@ -132,7 +139,7 @@ $dropdown_activo = function (array $archivos) use ($_pagina_actual): bool {
         </div>
 
         <?php if ($_logueado): ?>
-            <div style="display:flex; align-items:center; gap:16px;">
+            <div class="nav-actions">
                 <div class="nav-dropdown">
                     <button type="button" class="nav-dropdown-toggle nav-settings-toggle" aria-haspopup="true" aria-expanded="false">
                         <span class="nav-settings-textos">
@@ -162,54 +169,13 @@ $dropdown_activo = function (array $archivos) use ($_pagina_actual): bool {
                 <a href="logout.php" class="nav-cta">Cerrar sesión</a>
             </div>
         <?php else: ?>
-            <div style="display:flex; align-items:center; gap:22px;">
-                <a href="login.php" style="font-size:0.9rem; color:var(--muted);">Iniciar sesión</a>
+            <div class="nav-actions nav-actions--guest">
+                <a href="login.php" class="nav-login-link">Iniciar sesión</a>
                 <a href="login.php?redirect=citas.php" class="nav-cta">Agendar cita</a>
             </div>
         <?php endif; ?>
+        </div>
     </nav>
 </header>
 
-<?php if ($_logueado): ?>
-<script>
-// Controla que los menús desplegables del navbar (Administrador, Doctor, Recepcionista, etc.)
-// se abran y cierren al hacer clic, y que solo uno quede abierto a la vez.
-(function () {
-    var dropdowns = document.querySelectorAll('.nav-dropdown'); // Todos los menús desplegables del navbar.
-
-    // Cierra todos los menús, menos el que se le pase como "excepto" (si aplica).
-    function cerrarTodos(excepto) {
-        dropdowns.forEach(function (d) {
-            if (d !== excepto) {
-                d.classList.remove('open');
-                d.querySelector('.nav-dropdown-toggle').setAttribute('aria-expanded', 'false');
-            }
-        });
-    }
-
-    // A cada menú le agregamos el clic en su botón para abrirlo/cerrarlo.
-    dropdowns.forEach(function (dropdown) {
-        var boton = dropdown.querySelector('.nav-dropdown-toggle');
-        boton.addEventListener('click', function (e) {
-            e.stopPropagation(); // Evita que el clic "suba" y dispare el cierre general de abajo.
-            var abierto = dropdown.classList.contains('open');
-            cerrarTodos(dropdown); // Cierra los demás antes de abrir este.
-            dropdown.classList.toggle('open', !abierto);
-            boton.setAttribute('aria-expanded', String(!abierto));
-        });
-    });
-
-    // Si el usuario hace clic en cualquier otra parte de la página, se cierran todos los menús.
-    document.addEventListener('click', function () {
-        cerrarTodos(null);
-    });
-
-    // Si presiona la tecla Escape, también se cierran todos.
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') {
-            cerrarTodos(null);
-        }
-    });
-})();
-</script>
-<?php endif; ?>
+<script src="assets/js/shared/navbar.js"></script>

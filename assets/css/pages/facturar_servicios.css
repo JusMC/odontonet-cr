@@ -223,3 +223,25 @@
     margin-top: 8px;
     display: none;
 }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 480px) {
+    .citas-card {
+        padding: 22px 18px;
+    }
+
+    .wizard-step-circle {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+
+    .wizard-step-label {
+        font-size: 0.62rem;
+        white-space: normal;
+    }
+
+    .wizard-step-line {
+        margin-top: 14px;
+    }
+}

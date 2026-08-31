@@ -190,3 +190,19 @@ select:focus {
     background: var(--primary, #4F46E5);
     font-weight: bold;
 }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 640px) {
+    .citas-hero {
+        padding: 48px 0 24px;
+    }
+
+    .citas-card {
+        padding: 22px;
+    }
+
+    .grid-servicio,
+    .insumo-container {
+        grid-template-columns: 1fr;
+    }
+}

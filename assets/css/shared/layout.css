@@ -39,11 +39,40 @@
         display:block;
     }
 
+    /* ---------- Menú de navegación (links + acciones), entre el logo y el
+       burger. En escritorio ocupa el espacio restante del nav, con los
+       links pegados al logo y las acciones (perfil/login) al extremo
+       derecho; en móvil se convierte en el panel desplegable del burger
+       (ver @media más abajo). ---------- */
+    .nav-menu{
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        flex:1;
+        margin-left:48px;
+    }
+
     /* ---------- Enlaces de navegación (Servicios, Beneficios, etc.) ---------- */
     .nav-links{
         display:flex;
         gap:30px;
         font-size:0.88rem;
+        color:var(--muted);
+    }
+
+    /* ---------- Acciones a la derecha del navbar (perfil+logout, o login+CTA) ---------- */
+    .nav-actions{
+        display:flex;
+        align-items:center;
+        gap:16px;
+    }
+
+    .nav-actions--guest{
+        gap:22px;
+    }
+
+    .nav-login-link{
+        font-size:0.9rem;
         color:var(--muted);
     }
 
@@ -239,9 +268,133 @@
     }
     .nav-cta:hover{ transform:translateY(-2px); box-shadow:0 0 0 1px rgba(255,255,255,0.1), 0 12px 30px rgba(0,240,255,0.3);}
 
-    /* Botón "hamburguesa" para menú móvil: reservado para cuando se agregue
-    un menú responsive real; por ahora está oculto/sin usar. */
-    .burger{display:none;}
+    /* ---------- Botón "hamburguesa" (solo visible en móvil, ver @media) ---------- */
+    .burger{
+        display:none;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        gap:5px;
+        width:40px;
+        height:40px;
+        flex-shrink:0;
+        background:none;
+        border:none;
+        cursor:pointer;
+        padding:0;
+    }
+
+    .burger-bar{
+        display:block;
+        width:22px;
+        height:2px;
+        border-radius:2px;
+        background:var(--text);
+        transition:transform .2s ease, opacity .2s ease;
+    }
+
+    /* Las 3 barras se convierten en una "X" cuando el menú está abierto. */
+    .burger.open .burger-bar:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+    .burger.open .burger-bar:nth-child(2){ opacity:0; }
+    .burger.open .burger-bar:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+    /* ---------- NAV: menú móvil ---------- */
+    @media (max-width:768px){
+        nav{
+            flex-wrap:wrap;
+            padding:16px 20px;
+        }
+
+        .burger{
+            display:flex;
+            order:2;
+        }
+
+        /* El panel de navegación pasa a ocupar todo el ancho, debajo del
+           logo+burger, y queda oculto hasta que se abre con el botón. */
+        .nav-menu{
+            order:3;
+            flex:0 0 100%;
+            margin-left:0;
+            display:none;
+            flex-direction:column;
+            align-items:stretch;
+            gap:22px;
+            margin-top:18px;
+            padding-top:18px;
+            border-top:1px solid var(--line);
+        }
+
+        .nav-menu.open{
+            display:flex;
+        }
+
+        .nav-links{
+            flex-direction:column;
+            gap:16px;
+            font-size:0.95rem;
+        }
+
+        .nav-actions{
+            flex-direction:column;
+            align-items:stretch;
+            gap:14px;
+        }
+
+        .nav-actions--guest{
+            gap:14px;
+        }
+
+        .nav-cta{
+            text-align:center;
+        }
+
+        .nav-login-link{
+            text-align:center;
+        }
+
+        /* Los botones de los desplegables (Administrador/Doctor/Recepcionista
+           y el de perfil) ocupan todo el ancho, con el caret/avatar a la
+           derecha, para que se vean como encabezados de acordeón. */
+        .nav-dropdown-toggle{
+            width:100%;
+            justify-content:space-between;
+        }
+
+        /* Los desplegables de rol/perfil dejan de ser popups flotantes y
+           pasan a comportarse como un acordeón dentro del panel móvil. */
+        .nav-dropdown-menu{
+            position:static;
+            transform:none;
+            opacity:1;
+            visibility:visible;
+            pointer-events:auto;
+            background:transparent;
+            backdrop-filter:none;
+            border:none;
+            box-shadow:none;
+            padding:0;
+            max-height:0;
+            overflow:hidden;
+            transition:max-height .2s ease;
+        }
+
+        .nav-dropdown.open .nav-dropdown-menu{
+            max-height:400px;
+            padding:6px 0 6px 16px;
+        }
+
+        .nav-settings-textos{
+            align-items:flex-start;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+        .burger-bar,
+        .nav-dropdown-menu{
+            transition:none;
+        }
+    }
 
     /* ---------- FOOTER ---------- */
     footer{
@@ -282,4 +435,26 @@
         font-size:0.8rem;
         flex-wrap:wrap; /* Para que no se encimen en pantallas angostas */
         gap:10px;
+    }
+
+    /* ---------- FOOTER: responsive ---------- */
+    @media (max-width:768px){
+        .footer-grid{
+            grid-template-columns:1fr 1fr;
+            gap:32px 24px;
+        }
+    }
+
+    @media (max-width:480px){
+        footer{ padding:44px 0 24px; }
+
+        .footer-grid{
+            grid-template-columns:1fr;
+            gap:28px;
+        }
+
+        .footer-bottom{
+            justify-content:center;
+            text-align:center;
+        }
     }

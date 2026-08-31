@@ -323,6 +323,12 @@
     .dash-modal-card, .dash-fab { animation: none; transition: none; }
 }
 
+@media (max-width: 560px) {
+    .dash-modal-card .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* ---------- Checklist de doctores / productos dentro del modal ---------- */
 .checklist-caja {
     display: grid;
