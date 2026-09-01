@@ -40,16 +40,13 @@
     }
 
     /* ---------- Menú de navegación (links + acciones), entre el logo y el
-       burger. En escritorio ocupa el espacio restante del nav, con los
-       links pegados al logo y las acciones (perfil/login) al extremo
-       derecho; en móvil se convierte en el panel desplegable del burger
-       (ver @media más abajo). ---------- */
+       burger. En escritorio no genera su propia caja (display:contents):
+       .nav-links y .nav-actions pasan a ser hijos directos de <nav>, que
+       los distribuye igual que antes (justify-content:space-between entre
+       logo/links/acciones). En móvil se convierte en el panel desplegable
+       del burger, con caja propia (ver @media más abajo). ---------- */
     .nav-menu{
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        flex:1;
-        margin-left:48px;
+        display:contents;
     }
 
     /* ---------- Enlaces de navegación (Servicios, Beneficios, etc.) ---------- */

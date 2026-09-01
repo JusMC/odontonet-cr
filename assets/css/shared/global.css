@@ -20,8 +20,12 @@
     box-sizing:border-box;
 }
 
-html { 
+html {
     scroll-behavior:smooth; /* Anima el salto al hacer clic en enlaces tipo #servicios */
+    background: var(--bg); /* Mismo fondo que body: si algo (ej. un .glow) empuja el ancho
+        real de la página más allá del viewport, no se ve una franja en blanco a la derecha */
+    overflow-x: hidden; /* Igual que en body: los elementos position:fixed (los .glow) no
+        siempre respetan el overflow-x:hidden de body en todos los navegadores/zooms */
 }
 
 body {
